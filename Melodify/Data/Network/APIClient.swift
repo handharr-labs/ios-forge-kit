@@ -7,7 +7,15 @@ enum APIError: Error {
     case networkError(Error)
 }
 
-struct APIClient {
+protocol APIClientProtocol {
+    func get<T: Decodable>(_ url: URL) async throws -> T
+    func post<Body: Encodable, T: Decodable>(_ url: URL, body: Body) async throws -> T
+    func put<Body: Encodable, T: Decodable>(_ url: URL, body: Body) async throws -> T
+    func patch<Body: Encodable, T: Decodable>(_ url: URL, body: Body) async throws -> T
+    func delete<T: Decodable>(_ url: URL) async throws -> T
+}
+
+struct APIClient: APIClientProtocol {
     private let session: URLSession
     private let decoder = JSONDecoder()
     private let encoder = JSONEncoder()

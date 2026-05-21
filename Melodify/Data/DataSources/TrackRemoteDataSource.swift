@@ -1,10 +1,10 @@
 import Foundation
 
 final class TrackRemoteDataSource: TrackDataSourceProtocol {
-    private let client: APIClient
+    private let client: APIClientProtocol
     private let baseURL = "https://itunes.apple.com"
 
-    init(client: APIClient = APIClient()) {
+    init(client: APIClientProtocol = APIClient()) {
         self.client = client
     }
 

@@ -1,10 +1,10 @@
 import Foundation
 
 final class PlaylistRemoteDataSource: PlaylistDataSourceProtocol {
-    private let client: APIClient
+    private let client: APIClientProtocol
     private let baseURL = "https://6a09e642e7e3f433d483900b.mockapi.io/api/v1/playlist"
 
-    init(client: APIClient = APIClient()) {
+    init(client: APIClientProtocol = APIClient()) {
         self.client = client
     }
 
