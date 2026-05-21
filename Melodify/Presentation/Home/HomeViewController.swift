@@ -1,9 +1,11 @@
 import UIKit
+import Combine
 
 final class HomeViewController: UIViewController {
     private let viewModel: HomeViewModel
+    private var cancellables = Set<AnyCancellable>()
 
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let tableView = UITableView()
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     init(viewModel: HomeViewModel) {
@@ -25,8 +27,9 @@ final class HomeViewController: UIViewController {
 
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.rowHeight = 56
+        tableView.dataSource = self
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -46,45 +49,52 @@ final class HomeViewController: UIViewController {
     }
 
     private func bindViewModel() {
-        viewModel.onUpdate = { [weak self] in
-            guard let self else { return }
-            activityIndicator.stopAnimating()
-            tableView.reloadData()
-        }
-        viewModel.onError = { [weak self] message in
-            guard let self else { return }
-            activityIndicator.stopAnimating()
-            let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            present(alert, animated: true)
-        }
-        // Show spinner while loading
-        if viewModel.isLoading { activityIndicator.startAnimating() }
+        viewModel.$feedItems
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in self?.tableView.reloadData() }
+            .store(in: &cancellables)
+
+        viewModel.$isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] loading in
+                loading ? self?.activityIndicator.startAnimating()
+                        : self?.activityIndicator.stopAnimating()
+            }
+            .store(in: &cancellables)
+
+        viewModel.$errorMessage
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
+            .sink { [weak self] message in
+                guard let self else { return }
+                let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                present(alert, animated: true)
+            }
+            .store(in: &cancellables)
     }
 }
 
 extension HomeViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int { 2 }
-
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        section == 0 ? "Featured Tracks" : "Playlists"
-    }
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        section == 0 ? viewModel.featuredTracks.count : viewModel.playlists.count
+        viewModel.feedItems.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
-        if indexPath.section == 0 {
-            let uiModel = viewModel.featuredTracks[indexPath.row]
-            cell.textLabel?.text = uiModel.title
-            cell.detailTextLabel?.text = uiModel.artist
-        } else {
-            let uiModel = viewModel.playlists[indexPath.row]
-            cell.textLabel?.text = uiModel.name
-            cell.detailTextLabel?.text = uiModel.description
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        var content = cell.defaultContentConfiguration()
+        switch viewModel.feedItems[indexPath.row] {
+        case .banner(let model):
+            content.text = model.title
+            content.secondaryText = model.subtitle
+        case .track(let model):
+            content.text = model.title
+            content.secondaryText = model.artist
+        case .playlist(let model):
+            content.text = model.name
+            content.secondaryText = model.description
         }
+        cell.contentConfiguration = content
         return cell
     }
 }

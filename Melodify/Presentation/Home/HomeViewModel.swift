@@ -1,15 +1,13 @@
 import Foundation
+import Combine
 
 @MainActor
 final class HomeViewModel {
+    @Published private(set) var feedItems: [HomeFeedItem] = []
+    @Published private(set) var isLoading = false
+    @Published private(set) var errorMessage: String?
+
     private let fetchHomeData: FetchHomeDataUseCaseProtocol
-
-    private(set) var featuredTracks: [TrackUIModel] = []
-    private(set) var playlists: [PlaylistUIModel] = []
-    private(set) var isLoading: Bool = false
-
-    var onUpdate: (() -> Void)?
-    var onError: ((String) -> Void)?
 
     init(fetchHomeData: FetchHomeDataUseCaseProtocol) {
         self.fetchHomeData = fetchHomeData
@@ -29,11 +27,12 @@ final class HomeViewModel {
             defer { isLoading = false }
             do {
                 let data = try await fetchHomeData.execute(policy: .cached, param: param)
-                featuredTracks = data.featuredTracks.map(TrackUIModelMapper.toUIModel)
-                playlists = data.playlists.map(PlaylistUIModelMapper.toUIModel)
-                onUpdate?()
+                let banner = HomeFeedItem.banner(BannerUIModel(title: "Discover Music", subtitle: "Top hits this week"))
+                let tracks = data.featuredTracks.map { HomeFeedItem.track(TrackUIModelMapper.toUIModel($0)) }
+                let playlists = data.playlists.map { HomeFeedItem.playlist(PlaylistUIModelMapper.toUIModel($0)) }
+                feedItems = [banner] + tracks + playlists
             } catch {
-                onError?(error.localizedDescription)
+                errorMessage = error.localizedDescription
             }
         }
     }

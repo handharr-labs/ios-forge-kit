@@ -2,6 +2,8 @@ import UIKit
 import Combine
 
 final class TrackListViewController: UIViewController {
+    weak var delegate: TrackListDelegate?
+
     private let viewModel: TrackListViewModel
     private var cancellables = Set<AnyCancellable>()
 
@@ -102,8 +104,7 @@ extension TrackListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let uiModel = viewModel.tracks[indexPath.row]
-        let detailVC = TrackDetailViewController(viewModel: TrackDetailViewModel(trackId: uiModel.id, getTrackDetailUseCase: GetTrackDetailUseCase(repository: TrackRepository())))
-        navigationController?.pushViewController(detailVC, animated: true)
+        delegate?.didSelectTrack(id: uiModel.id)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
