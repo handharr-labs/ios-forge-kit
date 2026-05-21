@@ -8,18 +8,18 @@ final class PlaylistRemoteDataSource: PlaylistDataSourceProtocol {
         self.client = client
     }
 
-    func fetchPlaylists() async throws -> [PlaylistDTO] {
+    func fetchPlaylists(_ request: FetchPlaylistsRequest) async throws -> [PlaylistDTO] {
         guard let url = URL(string: baseURL) else { throw APIError.invalidURL }
         return try await client.get(url)
     }
 
-    func createPlaylist(body: CreatePlaylistRequestDTO) async throws -> PlaylistDTO {
+    func createPlaylist(_ request: CreatePlaylistRequest) async throws -> PlaylistDTO {
         guard let url = URL(string: baseURL) else { throw APIError.invalidURL }
-        return try await client.post(url, body: body)
+        return try await client.post(url, body: request)
     }
 
-    func updatePlaylist(id: Int, body: UpdatePlaylistRequestDTO) async throws -> PlaylistDTO {
-        guard let url = URL(string: "\(baseURL)/\(id)") else { throw APIError.invalidURL }
-        return try await client.put(url, body: body)
+    func updatePlaylist(_ request: UpdatePlaylistRequest) async throws -> PlaylistDTO {
+        guard let url = URL(string: "\(baseURL)/\(request.id)") else { throw APIError.invalidURL }
+        return try await client.put(url, body: request)
     }
 }

@@ -1,10 +1,3 @@
-//
-//  TrackDetailViewModelTest.swift
-//  MelodifyTests
-//
-//  Created by puras.handharmahua@mekari.com on 21/05/26.
-//
-
 import XCTest
 @testable import Melodify
 import Combine
@@ -12,35 +5,55 @@ import Combine
 @MainActor
 final class TrackDetailViewModelTest: XCTestCase {
     var sut: TrackDetailViewModel!
-    var getTrackDetailUseCaseMock: MockGetTrackDetailUseCase!
+    var mockUseCase: MockGetTrackDetailUseCase!
     var cancellable: Set<AnyCancellable>!
-    
+
     override func setUp() {
         super.setUp()
-        getTrackDetailUseCaseMock = MockGetTrackDetailUseCase()
-        sut = TrackDetailViewModel(track: Track(id: 1, title: "Title", artist: "Artist", album: "Album", artworkURL: nil, previewURL: nil, genre: "Genre", durationMs: 300), getTrackDetailUseCase: getTrackDetailUseCaseMock)
+        mockUseCase = MockGetTrackDetailUseCase()
+        sut = TrackDetailViewModel(trackId: 1, getTrackDetailUseCase: mockUseCase)
         cancellable = []
     }
-    
+
     override func tearDown() {
         sut = nil
-        getTrackDetailUseCaseMock = nil
+        mockUseCase = nil
+        cancellable = nil
         super.tearDown()
     }
-    
-    func test_load_success() async {
-        getTrackDetailUseCaseMock.stubbedResult = .success(Track(id: 1, title: "Title", artist: "Artist", album: "Album", artworkURL: nil, previewURL: nil, genre: "Genre", durationMs: 300))
-        
-        let expectation = expectation(description: "Test")
-        sut.$track
+
+    func test_load_success_populatesDetail() async {
+        mockUseCase.stubbedResult = .success(
+            Track(id: 1, title: "Title", artist: "Artist", album: "Album",
+                  artworkURL: nil, previewURL: nil, genre: "Genre", durationMs: 300)
+        )
+
+        let expectation = expectation(description: "detail published")
+        sut.$detail
             .dropFirst()
-            .compactMap({ $0 })
-            .sink(receiveValue: { _ in expectation.fulfill() })
+            .compactMap { $0 }
+            .sink { _ in expectation.fulfill() }
             .store(in: &cancellable)
-        
+
         sut.load()
         await fulfillment(of: [expectation], timeout: 2)
-        
-        XCTAssertEqual(sut.track?.id, 1)
+
+        XCTAssertEqual(sut.detail?.title, "Title")
+    }
+
+    func test_load_failure_setsErrorMessage() async {
+        mockUseCase.stubbedResult = .failure(APIError.networkError(URLError(.notConnectedToInternet)))
+
+        let expectation = expectation(description: "error published")
+        sut.$errorMessage
+            .dropFirst()
+            .compactMap { $0 }
+            .sink { _ in expectation.fulfill() }
+            .store(in: &cancellable)
+
+        sut.load()
+        await fulfillment(of: [expectation], timeout: 2)
+
+        XCTAssertNotNil(sut.errorMessage)
     }
 }

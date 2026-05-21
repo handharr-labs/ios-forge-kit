@@ -7,27 +7,28 @@ final class PlaylistRepository: PlaylistRepositoryProtocol {
         self.remoteDataSource = remoteDataSource
     }
 
-    func fetchPlaylists() async throws -> [Playlist] {
-        let dtos = try await remoteDataSource.fetchPlaylists()
+    func fetchPlaylists(policy: FetchPolicy) async throws -> [Playlist] {
+        let dtos = try await remoteDataSource.fetchPlaylists(FetchPlaylistsRequest())
         return dtos.map { PlaylistMapper.toDomain($0) }
     }
 
     func createPlaylist(param: CreatePlaylistParam) async throws -> Playlist {
-        let body = CreatePlaylistRequestDTO(
+        let request = CreatePlaylistRequest(
             name: param.query.name,
             description: param.query.description,
             trackIds: param.query.trackIds
         )
-        let dto = try await remoteDataSource.createPlaylist(body: body)
+        let dto = try await remoteDataSource.createPlaylist(request)
         return PlaylistMapper.toDomain(dto)
     }
 
     func updatePlaylist(param: UpdatePlaylistParam) async throws -> Playlist {
-        let body = UpdatePlaylistRequestDTO(
+        let request = UpdatePlaylistRequest(
+            id: param.path.id,
             name: param.query.name,
             description: param.query.description
         )
-        let dto = try await remoteDataSource.updatePlaylist(id: param.path.id, body: body)
+        let dto = try await remoteDataSource.updatePlaylist(request)
         return PlaylistMapper.toDomain(dto)
     }
 }

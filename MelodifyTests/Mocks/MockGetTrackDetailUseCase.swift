@@ -10,12 +10,12 @@ import Foundation
 
 final class MockGetTrackDetailUseCase: GetTrackDetailUseCaseProtocol {
     var stubbedResult: Result<Track, Error> = .success(Track(id: 0, title: "", artist: "", album: "", artworkURL: nil, previewURL: nil, genre: "", durationMs: 0))
-    var calledCount = 1
-    var executeFetchPolicy: FetchPolicy?
+    var calledCount = 0
+    var executePolicy: FetchPolicy?
     var executeParam: GetTrackDetailParam?
-    
-    func execute(fetchPolicy: FetchPolicy, param: GetTrackDetailParam) async throws -> Track {
-        executeFetchPolicy = fetchPolicy
+
+    func execute(policy: FetchPolicy, param: GetTrackDetailParam) async throws -> Track {
+        executePolicy = policy
         executeParam = param
         calledCount += 1
         return try stubbedResult.get()

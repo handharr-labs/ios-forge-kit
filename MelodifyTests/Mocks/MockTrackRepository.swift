@@ -11,10 +11,12 @@ final class MockTrackRepository: TrackRepositoryProtocol {
     var receivedParam: SearchTracksParam?
     var getTrackDetailPolicy: FetchPolicy?
     var getTrackDetailParam: GetTrackDetailParam?
+    var searchHandler: ((FetchPolicy, SearchTracksParam) throws -> [Track])?
 
     func searchTracks(policy: FetchPolicy, param: SearchTracksParam) async throws -> [Track] {
         callCount += 1
         receivedParam = param
+        if let handler = searchHandler { return try handler(policy, param) }
         return try stubbedResult.get()
     }
     

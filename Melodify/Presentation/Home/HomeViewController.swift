@@ -77,13 +77,13 @@ extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         if indexPath.section == 0 {
-            let track = viewModel.featuredTracks[indexPath.row]
-            cell.textLabel?.text = track.title
-            cell.detailTextLabel?.text = track.artist
+            let uiModel = viewModel.featuredTracks[indexPath.row]
+            cell.textLabel?.text = uiModel.title
+            cell.detailTextLabel?.text = uiModel.artist
         } else {
-            let playlist = viewModel.playlists[indexPath.row]
-            cell.textLabel?.text = playlist.name
-            cell.detailTextLabel?.text = playlist.description
+            let uiModel = viewModel.playlists[indexPath.row]
+            cell.textLabel?.text = uiModel.name
+            cell.detailTextLabel?.text = uiModel.description
         }
         return cell
     }

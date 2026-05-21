@@ -4,8 +4,8 @@ import Foundation
 final class HomeViewModel {
     private let fetchHomeData: FetchHomeDataUseCaseProtocol
 
-    private(set) var featuredTracks: [Track] = []
-    private(set) var playlists: [Playlist] = []
+    private(set) var featuredTracks: [TrackUIModel] = []
+    private(set) var playlists: [PlaylistUIModel] = []
     private(set) var isLoading: Bool = false
 
     var onUpdate: (() -> Void)?
@@ -29,8 +29,8 @@ final class HomeViewModel {
             defer { isLoading = false }
             do {
                 let data = try await fetchHomeData.execute(policy: .cached, param: param)
-                featuredTracks = data.featuredTracks
-                playlists = data.playlists
+                featuredTracks = data.featuredTracks.map(TrackUIModelMapper.toUIModel)
+                playlists = data.playlists.map(PlaylistUIModelMapper.toUIModel)
                 onUpdate?()
             } catch {
                 onError?(error.localizedDescription)

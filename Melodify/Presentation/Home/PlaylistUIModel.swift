@@ -1,8 +1,7 @@
 import Foundation
 
-struct PlaylistDTO: Codable {
+struct PlaylistUIModel {
     let id: Int
     let name: String
     let description: String
 }
-

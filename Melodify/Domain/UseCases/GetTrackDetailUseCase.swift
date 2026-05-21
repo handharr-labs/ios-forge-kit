@@ -8,17 +8,17 @@
 import Foundation
 
 protocol GetTrackDetailUseCaseProtocol {
-    func execute(fetchPolicy: FetchPolicy, param:  GetTrackDetailParam) async throws -> Track
+    func execute(policy: FetchPolicy, param: GetTrackDetailParam) async throws -> Track
 }
 
 final class GetTrackDetailUseCase: GetTrackDetailUseCaseProtocol {
     private let repository: TrackRepositoryProtocol
-    
-    init(repository: TrackRepositoryProtocol = TrackRepository()) {
+
+    init(repository: TrackRepositoryProtocol) {
         self.repository = repository
     }
-    
-    func execute(fetchPolicy: FetchPolicy, param: GetTrackDetailParam) async throws -> Track {
-        return try await self.repository.getTrackDetail(policy: fetchPolicy, param: param)
+
+    func execute(policy: FetchPolicy, param: GetTrackDetailParam) async throws -> Track {
+        return try await repository.getTrackDetail(policy: policy, param: param)
     }
 }
