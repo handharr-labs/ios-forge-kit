@@ -5,7 +5,7 @@ import Combine
 final class TrackListViewModel: ObservableObject {
     private let searchTracks: SearchTracksUseCaseProtocol
 
-    @Published private(set) var tracks: [Track] = []
+    @Published private(set) var tracks: [TrackUIModel] = []
     @Published private(set) var isLoading: Bool = false
     @Published private(set) var errorMessage: String? = nil
 
@@ -44,7 +44,7 @@ final class TrackListViewModel: ObservableObject {
                     )
                 )
                 let newTracks = try await searchTracks.execute(policy: policy, param: param)
-                tracks += newTracks
+                tracks += newTracks.map(TrackUIModelMapper.toUIModel)
             } catch {
                 errorMessage = error.localizedDescription
             }

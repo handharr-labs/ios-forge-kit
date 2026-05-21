@@ -70,24 +70,24 @@ final class TrackDetailViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel.$track
+        viewModel.$detail
             .receive(on: DispatchQueue.main)
-            .compactMap({ $0 })
-            .sink { [weak self] value in
-                self?.populateTrack(with: value)
+            .compactMap { $0 }
+            .sink { [weak self] detail in
+                self?.populate(with: detail)
             }
             .store(in: &self.cancellable)
     }
-    
-    private func populateTrack(with track: Track) {
-        titleLabel.text = track.title
-        artistLabel.text = track.artist
-        albumLabel.text = track.album
-        genreLabel.text = track.genre
-        durationLabel.text = self.viewModel.duration
-        self.title = track.title
 
-        guard let url = track.artworkURL else { return }
+    private func populate(with detail: TrackDetailUIModel) {
+        title = detail.title
+        titleLabel.text = detail.title
+        artistLabel.text = detail.artist
+        albumLabel.text = detail.album
+        genreLabel.text = detail.genre
+        durationLabel.text = detail.duration
+
+        guard let url = detail.artworkURL else { return }
         Task { [weak self] in
             guard let (data, _) = try? await URLSession.shared.data(from: url),
                   let image = UIImage(data: data) else { return }

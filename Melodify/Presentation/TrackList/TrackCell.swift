@@ -23,12 +23,11 @@ final class TrackCell: UITableViewCell {
 
     required init?(coder: NSCoder) { fatalError() }
 
-    func configure(with track: Track) {
-        let seconds = track.durationMs / 1000
+    func configure(with track: TrackUIModel) {
         rowView.configure(with: MDSTrackRowConfiguration(
             title: track.title,
             subtitle: track.artist,
-            duration: String(format: "%d:%02d", seconds / 60, seconds % 60),
+            duration: track.duration,
             artworkURL: track.artworkURL
         ))
     }
