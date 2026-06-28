@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Forge Kit — iOS playground</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<meta name="description" content="The iOS Forge Kit playground hub — open the ForgeUI design-system showcase and browse the prototype apps that exercise the kit." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --iron:#0d1014; --iron-2:#14181f; --iron-3:#1b2029;
+    --ash:#262c36; --ash-2:#333b47;
+    --steel:#8b94a3; --steel-2:#5d6675;
+    --mist:#e7ebf1; --mist-dim:#aeb6c2;
+    --blue:#3870d9; --teal:#26ad82; --indigo:#7366d9;
+    --blue-glow:rgba(56,112,217,.5); --teal-glow:rgba(38,173,130,.42);
+    --display:"Chakra Petch",sans-serif;
+    --body:"IBM Plex Sans",sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+    --maxw:1120px; --hair:1px solid var(--ash);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--iron);color:var(--mist);font-family:var(--body);font-size:16px;
+    line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--blue);color:#fff}
+
+  .glow{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .glow::before,.glow::after{content:"";position:absolute;border-radius:50%;filter:blur(120px);opacity:.5}
+  .glow::before{width:620px;height:620px;top:-220px;left:-120px;background:radial-gradient(circle,var(--blue-glow),transparent 70%)}
+  .glow::after{width:520px;height:520px;top:80px;right:-160px;background:radial-gradient(circle,var(--teal-glow),transparent 70%)}
+  .grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4;
+    background-image:linear-gradient(var(--ash) 1px,transparent 1px),linear-gradient(90deg,var(--ash) 1px,transparent 1px);
+    background-size:56px 56px;mask-image:radial-gradient(ellipse 80% 60% at 50% 0,#000,transparent 75%)}
+  .wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  .eyebrow{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--steel)}
+  .eyebrow .tick{color:var(--blue)}
+  h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.01em;margin:0;line-height:1.05}
+
+  header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(13,16,20,.72);border-bottom:var(--hair)}
+  .bar{display:flex;align-items:center;gap:14px;height:60px}
+  .mark{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;letter-spacing:.02em;font-size:16px}
+  .anvil{width:22px;height:22px;flex:none}
+  .ver{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--teal);
+    border:1px solid color-mix(in srgb,var(--teal) 45%,transparent);border-radius:999px;padding:2px 9px;letter-spacing:.04em}
+  .bar .spacer{flex:1}
+  .navlink{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--steel);padding:6px 4px;transition:color .15s}
+  .navlink:hover{color:var(--mist)}
+
+  .hero{padding:88px 0 28px}
+  .hero .eyebrow{margin-bottom:22px}
+  .hero h1{font-size:clamp(40px,7.5vw,82px);letter-spacing:-.025em}
+  .hero h1 .em{background:linear-gradient(100deg,var(--blue),var(--teal));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{max-width:620px;margin:24px 0 0;font-size:clamp(16px,2.1vw,20px);color:var(--mist-dim)}
+  .runnote{display:inline-flex;align-items:center;gap:9px;margin-top:26px;font-family:var(--mono);font-size:12px;
+    color:var(--steel);border:var(--hair);background:var(--iron-2);border-radius:999px;padding:8px 15px}
+  .runnote .pip{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px color-mix(in srgb,var(--teal) 18%,transparent)}
+
+  /* ---- card grid ---- */
+  .deck{padding:44px 0 16px}
+  .deck-head{display:flex;align-items:baseline;gap:14px;margin-bottom:24px}
+  .deck-head .eyebrow .tick{color:var(--teal)}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:860px){.cards{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.cards{grid-template-columns:1fr}}
+
+  .card{display:flex;flex-direction:column;gap:14px;border:var(--hair);border-radius:16px;
+    background:var(--iron-2);padding:22px;transition:transform .2s cubic-bezier(.2,.7,.2,1),border-color .2s,background .2s;position:relative;overflow:hidden}
+  .card:hover{transform:translateY(-4px);border-color:var(--ash-2)}
+  .card:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .card .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;flex:none;
+    background:var(--iron-3);border:var(--hair)}
+  .card .ic svg{width:24px;height:24px}
+  .card h3{font-size:21px}
+  .card .sub{font-family:var(--mono);font-size:12px;color:var(--steel);line-height:1.5;flex:1}
+  .card .foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px}
+  .kind{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    border-radius:5px;padding:3px 8px;border:1px solid transparent}
+  .kind.ds{color:var(--teal);border-color:color-mix(in srgb,var(--teal) 40%,transparent)}
+  .kind.proto{color:var(--steel-2);border-color:var(--ash-2)}
+  .go{font-family:var(--mono);font-size:12px;color:var(--steel);transition:color .15s}
+  .card:hover .go{color:var(--mist)}
+
+  /* featured DS card */
+  .card.feature{grid-column:span 2;background:
+    radial-gradient(120% 140% at 100% 0,color-mix(in srgb,var(--blue) 16%,transparent),transparent 55%),var(--iron-2);
+    border-color:color-mix(in srgb,var(--blue) 35%,transparent)}
+  .card.feature::after{content:"";position:absolute;inset:0;border-radius:16px;pointer-events:none;
+    box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--blue) 22%,transparent)}
+  .card.feature .ic{background:linear-gradient(135deg,var(--blue),var(--teal));border-color:transparent}
+  .card.feature .ic svg{stroke:#fff}
+  .card.feature h3{font-size:25px}
+  .card.feature .go{color:var(--mist)}
+  @media(max-width:560px){.card.feature{grid-column:span 1}}
+
+  .ic svg{stroke:var(--blue);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+  footer{border-top:var(--hair);margin-top:64px;padding:46px 0 60px;position:relative;z-index:1}
+  .foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-end}
+  .foot .blurb{max-width:440px;color:var(--mist-dim);font-size:14px}
+  .foot .blurb b{color:var(--mist);font-family:var(--display)}
+  .foot .links{display:flex;gap:18px;font-family:var(--mono);font-size:13px}
+  .foot .links a{color:var(--steel);transition:color .15s}.foot .links a:hover{color:var(--blue)}
+  .colophon{margin-top:34px;font-family:var(--mono);font-size:11px;color:var(--steel-2)}
+
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+  .rise{opacity:0;transform:translateY(16px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .rise.d1{animation-delay:.06s}.rise.d2{animation-delay:.13s}.rise.d3{animation-delay:.2s}
+  @keyframes rise{to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="glow" aria-hidden="true"></div>
+<div class="grid-bg" aria-hidden="true"></div>
+
+<header>
+  <div class="wrap bar">
+    <span class="mark">
+      <svg class="anvil" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M3 8h11c0 2.2-1.4 3.4-3 3.8L12 15h3l1.5 4h-9L9 15h1.2l.8-3.2C8 11.4 5 10.6 5 8H3V8Z" fill="url(#g)"/>
+        <rect x="6" y="19.2" width="12" height="2.2" rx="1" fill="#5d6675"/>
+        <path d="M16 6.5c1.6 0 3 .9 3 2.3 0 .9-.6 1.2-1.4 1.2H14V8h2.2c.3 0 .3-.3 0-.4-.3-.1-.7-.1-.7-.6 0-.3.5-.5 1.3-.5Z" fill="url(#g)"/>
+        <defs><linearGradient id="g" x1="3" y1="8" x2="19" y2="19" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#3870d9"/><stop offset="1" stop-color="#26ad82"/></linearGradient></defs>
+      </svg>
+      Forge Kit
+    </span>
+    <span class="ver">v0.1.0</span>
+    <span class="spacer"></span>
+    <a class="navlink" href="forgeui.html">ForgeUI</a>
+    <a class="navlink" href="https://github.com/handharr-labs/ios-forge-kit" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow rise"><span class="tick">▰</span> iOS Forge Kit · Playground</p>
+    <h1 class="rise d1">One hub.<br/><span class="em">The whole kit.</span></h1>
+    <p class="lede rise d2">The playground is the runnable host for the iOS Forge Kit. It owns no UI of its
+      own — it mounts the <strong style="color:var(--mist)">ForgeUI</strong> catalog and launches the prototype
+      apps that exercise the shared <code style="font-family:var(--mono);color:var(--mist-dim)">Core</code> /
+      <code style="font-family:var(--mono);color:var(--mist-dim)">AppleClient</code> packages.</p>
+    <span class="runnote rise d2"><span class="pip"></span> ForgeUI tokens are live here on the web · the apps run in an iOS simulator</span>
+  </div>
+</section>
+
+<section class="deck">
+  <div class="wrap">
+    <div class="deck-head">
+      <p class="eyebrow"><span class="tick">⬡</span> Open a surface</p>
+    </div>
+    <div class="cards" id="cards"></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <p class="blurb"><b>iOS Forge Kit</b> — shared Swift packages for UIKit &amp; SwiftUI apps, plus the
+        prototypes and playground that exercise them. The native counterpart of the Web Forge Kit.</p>
+      <div class="links">
+        <a href="forgeui.html">ForgeUI showcase</a>
+        <a href="https://github.com/handharr-labs/ios-forge-kit" target="_blank" rel="noopener">Repository ↗</a>
+        <a href="https://github.com/handharr-labs/ios-forge-kit/releases/tag/v0.1.0" target="_blank" rel="noopener">v0.1.0 ↗</a>
+      </div>
+    </div>
+    <p class="colophon">Only the iOS playground target is runnable; this page is its web hub. Prototype apps open in a simulator.</p>
+  </div>
+</footer>
+
+<script>
+const REPO = "https://github.com/handharr-labs/ios-forge-kit";
+const ICON = {
+  palette:'<path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-1 2-2 0-1.3-1-1.7-1-2.7 0-.7.6-1.3 1.4-1.3H17a4 4 0 0 0 4-4c0-4.4-4-8-9-8Z"/><circle cx="7.5" cy="11" r="1.1"/><circle cx="12" cy="7.5" r="1.1"/><circle cx="16.5" cy="11" r="1.1"/>',
+  music:'<path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>',
+  chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.4A8 8 0 1 1 21 12Z"/><path d="M8.5 11h7M8.5 14h4"/>',
+  story:'<circle cx="12" cy="12" r="8.5"/><path d="M10.5 9.2v5.6l4.5-2.8z" fill="currentColor" stroke="none"/>',
+  eats:'<path d="M6 3v8M6 11a2 2 0 0 0 2-2V3M8 3v6M6 11v10"/><path d="M16 3c-1.6 0-2.5 2-2.5 4.5S14.4 12 16 12v9"/>',
+  hotel:'<path d="M4 21V5l9-2v18M13 21V9l7 2v10M4 21h17"/><path d="M7 8h2M7 12h2M16 13h1M16 16h1"/>',
+};
+const CARDS = [
+  {kind:"ds", icon:"palette", title:"ForgeUI Catalog", feature:true,
+   sub:"Tokens, components & the UIKit↔SwiftUI bridge — rendered live on the web.",
+   href:"forgeui.html", go:"Open showcase →", ext:false},
+  {kind:"proto", icon:"music", title:"Music",
+   sub:"HLS streaming · AudioService · FetchPolicy", href:REPO+"/tree/main/Prototypes/MusicApp", go:"Source ↗", ext:true},
+  {kind:"proto", icon:"chat", title:"Chat",
+   sub:"WebSocket mux · MessageContent · Send queue", href:REPO+"/tree/main/Prototypes/ChatApp", go:"Source ↗", ext:true},
+  {kind:"proto", icon:"story", title:"Story Viewer",
+   sub:"Three-view recycling · Prefetch · Auto-advance timer", href:REPO+"/tree/main/Prototypes/StoryViewerApp", go:"Source ↗", ext:true},
+  {kind:"proto", icon:"eats", title:"Uber Eats",
+   sub:"SSE order tracking · Basket · Three-tier API", href:REPO+"/tree/main/Prototypes/UberEatsApp", go:"Source ↗", ext:true},
+  {kind:"proto", icon:"hotel", title:"Hotel Booking",
+   sub:"ReservationService · Stripe facade · Offset pagination", href:REPO+"/tree/main/Prototypes/HotelBookingApp", go:"Source ↗", ext:true},
+];
+const kindLabel = k => k==="ds" ? "Design System · live" : "Prototype · simulator";
+document.getElementById("cards").innerHTML = CARDS.map(c=>`
+  <a class="card${c.feature?' feature':''}" href="${c.href}"${c.ext?' target="_blank" rel="noopener"':''}>
+    <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">${ICON[c.icon]}</svg></span>
+    <h3>${c.title}</h3>
+    <p class="sub">${c.sub}</p>
+    <div class="foot">
+      <span class="kind ${c.kind}">${kindLabel(c.kind)}</span>
+      <span class="go">${c.go}</span>
+    </div>
+  </a>`).join("");
+</script>
+</body>
+</html>
