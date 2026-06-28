@@ -39,6 +39,20 @@ final class FUIListRowsTests: XCTestCase {
         XCTAssertNotNil(visibleImage)
     }
 
+    func testListTileIconDoesNotOverlapTitle() {
+        let tile = FUIListTile()
+        tile.configure(with: .init(title: "Notifications", subtitle: "Push and email", leadingIconName: FUIIcons.bell))
+        tile.frame = CGRect(x: 0, y: 0, width: 320, height: 64)
+        tile.layoutIfNeeded()
+        let icon = tile.fui_subviews(ofType: UIImageView.self).first { !$0.isHidden }
+        let title = tile.fui_subviews(ofType: UILabel.self).first { $0.text == "Notifications" }
+        XCTAssertNotNil(icon); XCTAssertNotNil(title)
+        // icon lives on the tile; the title lives inside a stack — compare in a shared coordinate space.
+        let iconMaxX = icon!.convert(icon!.bounds, to: tile).maxX
+        let titleMinX = title!.convert(title!.bounds, to: tile).minX
+        XCTAssertGreaterThanOrEqual(titleMinX, iconMaxX - 0.5, "leading icon overlaps the title")
+    }
+
     func testListTileOnTapFires() {
         let tile = FUIListTile()
         tile.configure(with: .init(title: "Tap me"))

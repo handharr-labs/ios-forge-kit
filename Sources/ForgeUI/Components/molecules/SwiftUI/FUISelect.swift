@@ -69,5 +69,6 @@ public struct FUISelect<Value: Hashable>: View {
                 )
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

@@ -59,6 +59,7 @@ public struct FUIToggleListTile: View {
                 .tint(Color(FUIColor.primary))
                 .disabled(!isEnabled)
         }
+        .frame(maxWidth: .infinity)
         .padding(.vertical, Spacing.xs)
     }
 }

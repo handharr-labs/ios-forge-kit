@@ -70,6 +70,15 @@ final class FUIAtomsTests: XCTestCase {
         XCTAssertEqual(spinner?.isAnimating, true)
     }
 
+    func testPrimaryButtonHasHorizontalPaddingAndMinHeight() {
+        let button = FUIPrimaryButton()
+        button.configure(with: .init(title: "Play", isEnabled: true, isLoading: false))
+        let size = button.intrinsicContentSize
+        let titleWidth = button.titleLabel?.intrinsicContentSize.width ?? 0
+        XCTAssertGreaterThan(size.width, titleWidth + 32, "button must pad its title horizontally")
+        XCTAssertGreaterThanOrEqual(size.height, 48, "button must meet a tappable min height")
+    }
+
     func testPrimaryButtonDisabledStateUsesGrayFill() {
         let button = FUIPrimaryButton()
         button.configure(with: .init(title: "Nope", isEnabled: false, isLoading: false))
@@ -97,6 +106,26 @@ final class FUIAtomsTests: XCTestCase {
         let view = FUILoading()
         view.configure(with: .init(variant: .inline, message: nil))
         XCTAssertEqual(view.backgroundColor, .clear)
+    }
+
+    func testLoadingInlineHasIntrinsicHeightAndStacksVertically() {
+        let view = FUILoading()
+        view.configure(with: .init(variant: .inline, message: "Loading…"))
+        // Self-sizing height must reflect spinner + label, not collapse to 0.
+        let fitted = view.systemLayoutSizeFitting(
+            CGSize(width: 200, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel)
+        XCTAssertGreaterThan(fitted.height, 30, "inline loading collapsed instead of sizing to its content")
+
+        view.frame = CGRect(x: 0, y: 0, width: 200, height: fitted.height)
+        view.layoutIfNeeded()
+        let spinner = view.fui_firstSubview(ofType: UIActivityIndicatorView.self)
+        let label = view.fui_firstSubview(ofType: UILabel.self)
+        XCTAssertNotNil(spinner); XCTAssertNotNil(label)
+        let sp = spinner!.convert(spinner!.bounds, to: view)
+        let lb = label!.convert(label!.bounds, to: view)
+        XCTAssertGreaterThanOrEqual(lb.minY, sp.maxY - 0.5, "label overlaps the spinner")
     }
 
     func testLoadingFullscreenVariantHasScrim() {

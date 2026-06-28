@@ -135,8 +135,9 @@ public final class FUIListTile: UIView {
         addSubview(chevronView)
 
         leadingIconWidthConstraint = leadingIconView.widthAnchor.constraint(equalToConstant: 0)
-        leadingIconToTextLeading = leadingIconView.trailingAnchor.constraint(
-            equalTo: textStack.leadingAnchor, constant: 0)
+        // Text sits to the *right* of the icon: text.leading = icon.trailing + gap.
+        leadingIconToTextLeading = textStack.leadingAnchor.constraint(
+            equalTo: leadingIconView.trailingAnchor, constant: 0)
 
         NSLayoutConstraint.activate([
             // Leading icon

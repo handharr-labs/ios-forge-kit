@@ -45,13 +45,15 @@ public struct FUIBanner: View {
                 Button(action: onDismiss) {
                     Image(systemName: FUIIcons.close)
                         .foregroundColor(status.swiftUIOnFill)
-                        .font(.fuiCaption)
+                        .font(.fuiBody)
+                        .padding(.top, 1)  // match the leading icon so the × aligns with it
                 }
                 .buttonStyle(.plain)
             }
         }
         .padding(.horizontal, Spacing.md)
         .padding(.vertical, Spacing.sm)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(status.swiftUIFill)
         .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
     }

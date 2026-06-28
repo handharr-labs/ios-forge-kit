@@ -63,6 +63,7 @@ public struct FUICheckboxListTile: View {
                     .foregroundColor(checkboxColor)
                     .font(.system(size: 20))
             }
+            .frame(maxWidth: .infinity)
             .contentShape(Rectangle())
             .padding(.vertical, Spacing.sm)
         }

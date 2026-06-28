@@ -17,6 +17,7 @@ public struct FUICard<Content: View>: View {
     public var body: some View {
         content
             .padding(padding)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color(FUIColor.surfaceElevated))
             .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
             .overlay(

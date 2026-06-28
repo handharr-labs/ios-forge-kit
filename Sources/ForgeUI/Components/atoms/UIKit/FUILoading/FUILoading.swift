@@ -29,7 +29,11 @@ public final class FUILoading: UIView {
             stack.centerXAnchor.constraint(equalTo: centerXAnchor),
             stack.centerYAnchor.constraint(equalTo: centerYAnchor),
             stack.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Spacing.md),
-            stack.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Spacing.md)
+            stack.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Spacing.md),
+            // Vertical hug so the inline variant has an intrinsic height (otherwise the
+            // view collapses to 0pt in a self-sizing container and the spinner overlaps the label).
+            stack.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Spacing.md),
+            stack.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -Spacing.md)
         ])
     }
 

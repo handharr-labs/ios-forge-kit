@@ -34,6 +34,7 @@ public struct FUITimeline: View {
                 itemRow(item: item, isLast: index == items.count - 1)
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     @ViewBuilder

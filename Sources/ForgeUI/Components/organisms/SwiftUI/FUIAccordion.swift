@@ -72,6 +72,7 @@ private struct FUIAccordionRow: View {
                 Text(item.detail)
                     .font(.fuiBody)
                     .foregroundColor(Color(FUIColor.textSecondary))
+                    .fixedSize(horizontal: false, vertical: true)  // wrap to multiple lines, never truncate
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, Spacing.lg)
                     .padding(.bottom, Spacing.lg)

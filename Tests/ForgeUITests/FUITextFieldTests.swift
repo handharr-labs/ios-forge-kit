@@ -25,6 +25,19 @@ final class FUITextFieldTests: XCTestCase {
         XCTAssertTrue(labels.allSatisfy { $0.isHidden || ($0.text ?? "").isEmpty })
     }
 
+    func testTextFieldIconDoesNotOverlapText() {
+        let field = FUITextField()
+        field.configure(with: .init(placeholder: "you@x.com", iconName: FUIIcons.person))
+        field.frame = CGRect(x: 0, y: 0, width: 320, height: 80)
+        field.layoutIfNeeded()
+        let icon = field.fui_subviews(ofType: UIImageView.self).first { !$0.isHidden }
+        let tf = field.fui_firstSubview(ofType: UITextField.self)
+        XCTAssertNotNil(icon); XCTAssertNotNil(tf)
+        // The text field must begin at or after the icon's trailing edge (icon + text share the well).
+        XCTAssertGreaterThanOrEqual(tf!.frame.minX, icon!.frame.maxX - 0.5,
+            "leading icon overlaps the text field")
+    }
+
     func testTextFieldSecureEntry() {
         let field = FUITextField()
         field.configure(with: .init(placeholder: "Password", isSecure: true))

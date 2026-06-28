@@ -19,6 +19,10 @@ public final class ForgeUICatalogViewController: UIViewController {
     private struct CatalogItem {
         let title: String
         let makePreview: () -> UIView
+        /// When true the preview is pinned to the full content width (for edge-to-edge
+        /// components that declare `.frame(maxWidth: .infinity)`); otherwise it hugs its
+        /// intrinsic width so atoms and UIKit stack previews don't stretch.
+        var fillsWidth: Bool = false
     }
 
     private struct CatalogSection {
@@ -33,7 +37,7 @@ public final class ForgeUICatalogViewController: UIViewController {
     private lazy var cells: [[UITableViewCell]] = sections.map { section in
         section.items.map { item in
             let cell = CatalogCell()
-            cell.configure(title: item.title, preview: item.makePreview())
+            cell.configure(title: item.title, preview: item.makePreview(), fillsWidth: item.fillsWidth)
             return cell
         }
     }
@@ -88,19 +92,19 @@ public final class ForgeUICatalogViewController: UIViewController {
                 CatalogItem(title: "Elevation", makePreview: makeElevationPreview),
             ]),
             CatalogSection(title: "Atoms (UIKit)", items: [
-                CatalogItem(title: "FUILoading", makePreview: makeLoadingPreview),
+                CatalogItem(title: "FUILoading", makePreview: makeLoadingPreview, fillsWidth: true),
                 CatalogItem(title: "FUIPrimaryButton", makePreview: makePrimaryButtonPreview),
-                CatalogItem(title: "FUITextField", makePreview: makeTextFieldPreview),
+                CatalogItem(title: "FUITextField", makePreview: makeTextFieldPreview, fillsWidth: true),
                 CatalogItem(title: "FUIOtpField", makePreview: makeOtpFieldPreview),
-                CatalogItem(title: "FUIPageControl", makePreview: makePageControlPreview),
+                CatalogItem(title: "FUIPageControl", makePreview: makePageControlPreview, fillsWidth: true),
             ]),
             CatalogSection(title: "Molecules (UIKit)", items: [
-                CatalogItem(title: "FUIMessageBubble", makePreview: makeMessageBubblePreview),
+                CatalogItem(title: "FUIMessageBubble", makePreview: makeMessageBubblePreview, fillsWidth: true),
                 CatalogItem(title: "FUIAudioPlayer", makePreview: makeAudioPlayerPreview),
-                CatalogItem(title: "FUIListTile", makePreview: makeListTilePreview),
+                CatalogItem(title: "FUIListTile", makePreview: makeListTilePreview, fillsWidth: true),
             ]),
             CatalogSection(title: "Organisms (UIKit)", items: [
-                CatalogItem(title: "FUIAppBar", makePreview: makeAppBarPreview),
+                CatalogItem(title: "FUIAppBar", makePreview: makeAppBarPreview, fillsWidth: true),
             ]),
             CatalogSection(title: "Atoms (SwiftUI)", items: [
                 CatalogItem(title: "FUIButton", makePreview: makeSUIButtonPreview),
@@ -110,45 +114,45 @@ public final class ForgeUICatalogViewController: UIViewController {
                 CatalogItem(title: "FUIIcon", makePreview: makeFUIIconPreview),
                 CatalogItem(title: "FUIIconButton", makePreview: makeFUIIconButtonPreview),
                 CatalogItem(title: "FUITag", makePreview: makeFUITagPreview),
-                CatalogItem(title: "FUIDivider", makePreview: makeFUIDividerPreview),
+                CatalogItem(title: "FUIDivider", makePreview: makeFUIDividerPreview, fillsWidth: true),
                 CatalogItem(title: "FUICheckbox", makePreview: makeFUICheckboxPreview),
                 CatalogItem(title: "FUIRadio", makePreview: makeFUIRadioPreview),
                 CatalogItem(title: "FUISwitch", makePreview: makeFUISwitchPreview),
                 CatalogItem(title: "FUIShimmer", makePreview: makeFUIShimmerPreview),
-                CatalogItem(title: "FUIProgressIndicator", makePreview: makeFUIProgressIndicatorPreview),
-                CatalogItem(title: "FUISlider", makePreview: makeFUISliderPreview),
+                CatalogItem(title: "FUIProgressIndicator", makePreview: makeFUIProgressIndicatorPreview, fillsWidth: true),
+                CatalogItem(title: "FUISlider", makePreview: makeFUISliderPreview, fillsWidth: true),
                 CatalogItem(title: "fuiTooltip modifier", makePreview: makeFUITooltipPreview),
                 CatalogItem(title: "FUIImage", makePreview: makeFUIImagePreview),
                 CatalogItem(title: "FUIFab", makePreview: makeFUIFabPreview),
-                CatalogItem(title: "FUISearchField", makePreview: makeFUISearchFieldPreview),
+                CatalogItem(title: "FUISearchField", makePreview: makeFUISearchFieldPreview, fillsWidth: true),
             ]),
             CatalogSection(title: "Molecules (SwiftUI)", items: [
-                CatalogItem(title: "FUICard", makePreview: makeFUICardPreview),
-                CatalogItem(title: "FUIBanner", makePreview: makeFUIBannerPreview),
+                CatalogItem(title: "FUICard", makePreview: makeFUICardPreview, fillsWidth: true),
+                CatalogItem(title: "FUIBanner", makePreview: makeFUIBannerPreview, fillsWidth: true),
                 CatalogItem(title: "FUIChip", makePreview: makeFUIChipPreview),
-                CatalogItem(title: "FUICheckboxListTile", makePreview: makeFUICheckboxListTilePreview),
-                CatalogItem(title: "FUIRadioListTile", makePreview: makeFUIRadioListTilePreview),
-                CatalogItem(title: "FUIToggleListTile", makePreview: makeFUIToggleListTilePreview),
-                CatalogItem(title: "FUISegmentedControl", makePreview: makeFUISegmentedControlPreview),
-                CatalogItem(title: "FUISelect", makePreview: makeFUISelectPreview),
+                CatalogItem(title: "FUICheckboxListTile", makePreview: makeFUICheckboxListTilePreview, fillsWidth: true),
+                CatalogItem(title: "FUIRadioListTile", makePreview: makeFUIRadioListTilePreview, fillsWidth: true),
+                CatalogItem(title: "FUIToggleListTile", makePreview: makeFUIToggleListTilePreview, fillsWidth: true),
+                CatalogItem(title: "FUISegmentedControl", makePreview: makeFUISegmentedControlPreview, fillsWidth: true),
+                CatalogItem(title: "FUISelect", makePreview: makeFUISelectPreview, fillsWidth: true),
                 CatalogItem(title: "FUIStepper", makePreview: makeFUIStepperPreview),
-                CatalogItem(title: "FUIToast", makePreview: makeFUIToastPreview),
-                CatalogItem(title: "FUITimeline", makePreview: makeFUITimelinePreview),
-                CatalogItem(title: "FUIChatBubble", makePreview: makeFUIChatBubblePreview),
-                CatalogItem(title: "FUIFileUpload", makePreview: makeFUIFileUploadPreview),
-                CatalogItem(title: "FUILoadingOverlay", makePreview: makeSUILoadingOverlayPreview),
+                CatalogItem(title: "FUIToast", makePreview: makeFUIToastPreview, fillsWidth: true),
+                CatalogItem(title: "FUITimeline", makePreview: makeFUITimelinePreview, fillsWidth: true),
+                CatalogItem(title: "FUIChatBubble", makePreview: makeFUIChatBubblePreview, fillsWidth: true),
+                CatalogItem(title: "FUIFileUpload", makePreview: makeFUIFileUploadPreview, fillsWidth: true),
+                CatalogItem(title: "FUILoadingOverlay", makePreview: makeSUILoadingOverlayPreview, fillsWidth: true),
             ]),
             CatalogSection(title: "Organisms (SwiftUI)", items: [
                 CatalogItem(title: "FUIDialog", makePreview: makeFUIDialogPreview),
-                CatalogItem(title: "FUITabs", makePreview: makeFUITabsPreview),
-                CatalogItem(title: "FUIAccordion", makePreview: makeFUIAccordionPreview),
-                CatalogItem(title: "FUIBottomNavBar", makePreview: makeFUIBottomNavBarPreview),
+                CatalogItem(title: "FUITabs", makePreview: makeFUITabsPreview, fillsWidth: true),
+                CatalogItem(title: "FUIAccordion", makePreview: makeFUIAccordionPreview, fillsWidth: true),
+                CatalogItem(title: "FUIBottomNavBar", makePreview: makeFUIBottomNavBarPreview, fillsWidth: true),
                 CatalogItem(title: "fuiBottomSheet modifier", makePreview: makeFUIBottomSheetPreview),
                 CatalogItem(title: "fuiContextMenu modifier", makePreview: makeFUIContextMenuPreview),
-                CatalogItem(title: "FUICalendar", makePreview: makeFUICalendarPreview),
+                CatalogItem(title: "FUICalendar", makePreview: makeFUICalendarPreview, fillsWidth: true),
                 CatalogItem(title: "fuiCountryPicker modifier", makePreview: makeFUICountryPickerPreview),
-                CatalogItem(title: "FUIStories", makePreview: makeFUIStoriesPreview),
-                CatalogItem(title: "FUIEmptyState", makePreview: makeSUIEmptyStatePreview),
+                CatalogItem(title: "FUIStories", makePreview: makeFUIStoriesPreview, fillsWidth: true),
+                CatalogItem(title: "FUIEmptyState", makePreview: makeSUIEmptyStatePreview, fillsWidth: true),
             ]),
         ]
     }
@@ -360,25 +364,42 @@ private extension ForgeUICatalogViewController {
     }
 
     func makeMessageBubblePreview() -> UIView {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = Spacing.sm
-        stack.alignment = .fill
+        // FUIMessageBubble is the bubble primitive only — the caller aligns it per
+        // variant (as ChatApp's cell does). Mirror that: outgoing hugs to the trailing
+        // edge, incoming to the leading edge, each capped at 75% of the row width.
+        let container = UIView()
+
         let outgoing = FUIMessageBubble()
+        outgoing.translatesAutoresizingMaskIntoConstraints = false
         outgoing.configure(with: FUIMessageBubbleConfiguration(
             text: "Hey! How's it going?",
             variant: .outgoing,
             meta: "10:30 · ✓✓"
         ))
+
         let incoming = FUIMessageBubble()
+        incoming.translatesAutoresizingMaskIntoConstraints = false
         incoming.configure(with: FUIMessageBubbleConfiguration(
             text: "All good, working on Melodify 🎵",
             variant: .incoming,
             meta: "10:31"
         ))
-        stack.addArrangedSubview(outgoing)
-        stack.addArrangedSubview(incoming)
-        return stack
+
+        container.addSubview(outgoing)
+        container.addSubview(incoming)
+        NSLayoutConstraint.activate([
+            outgoing.topAnchor.constraint(equalTo: container.topAnchor),
+            outgoing.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            outgoing.leadingAnchor.constraint(greaterThanOrEqualTo: container.leadingAnchor),
+            outgoing.widthAnchor.constraint(lessThanOrEqualTo: container.widthAnchor, multiplier: 0.75),
+
+            incoming.topAnchor.constraint(equalTo: outgoing.bottomAnchor, constant: Spacing.sm),
+            incoming.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            incoming.trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor),
+            incoming.widthAnchor.constraint(lessThanOrEqualTo: container.widthAnchor, multiplier: 0.75),
+            incoming.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+        ])
+        return container
     }
 
     func makeAudioPlayerPreview() -> UIView {
@@ -794,6 +815,7 @@ private extension ForgeUICatalogViewController {
             FUIToast(message: "Saved successfully", status: .success)
             FUIToast(message: "Something went wrong", status: .error)
         }
+        .frame(maxWidth: .infinity)  // fill the row; floating pills center within it
         .padding(Spacing.sm)
         return UIHostingView(rootView: view)
     }
@@ -1199,7 +1221,7 @@ private final class CatalogCell: UITableViewCell {
 
     required init?(coder: NSCoder) { nil }
 
-    func configure(title: String, preview: UIView) {
+    func configure(title: String, preview: UIView, fillsWidth: Bool = false) {
         nameLabel.text = title
         preview.translatesAutoresizingMaskIntoConstraints = false
         previewContainer.addSubview(preview)
@@ -1207,8 +1229,11 @@ private final class CatalogCell: UITableViewCell {
             preview.topAnchor.constraint(equalTo: previewContainer.topAnchor),
             preview.leadingAnchor.constraint(equalTo: previewContainer.leadingAnchor),
             preview.bottomAnchor.constraint(equalTo: previewContainer.bottomAnchor),
-            // trailing is `lessThanOrEqualTo` so intrinsic-width previews (stacks) don't stretch
-            preview.trailingAnchor.constraint(lessThanOrEqualTo: previewContainer.trailingAnchor),
+            // Edge-to-edge components fill the row; everything else hugs its intrinsic width
+            // so atoms and UIKit stack previews don't stretch.
+            fillsWidth
+                ? preview.trailingAnchor.constraint(equalTo: previewContainer.trailingAnchor)
+                : preview.trailingAnchor.constraint(lessThanOrEqualTo: previewContainer.trailingAnchor),
         ])
     }
 }

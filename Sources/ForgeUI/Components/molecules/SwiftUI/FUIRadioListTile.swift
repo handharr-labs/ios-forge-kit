@@ -55,6 +55,7 @@ public struct FUIRadioListTile<Value: Hashable>: View {
                     .foregroundColor(radioColor)
                     .font(.system(size: 20))
             }
+            .frame(maxWidth: .infinity)
             .contentShape(Rectangle())
             .padding(.vertical, Spacing.sm)
         }

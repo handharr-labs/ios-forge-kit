@@ -10,6 +10,16 @@ public final class FUIPrimaryButton: UIButton {
 
     required init?(coder: NSCoder) { fatalError() }
 
+    /// Pad the title and guarantee a tappable min height — a bare `UIButton` hugs its
+    /// title with zero horizontal padding, so without this the label touches the edges.
+    public override var intrinsicContentSize: CGSize {
+        let base = super.intrinsicContentSize
+        return CGSize(
+            width: base.width + Spacing.lg * 2,           // 24pt horizontal padding per side
+            height: max(base.height + Spacing.sm * 2, 48)  // min 48pt tall
+        )
+    }
+
     private func setup() {
         layer.cornerRadius = Radius.md
         titleLabel?.font = Typography.title

@@ -150,8 +150,9 @@ public final class FUITextField: UIView {
         wellView.layer.borderColor = FUIColor.line.cgColor
 
         iconWidthConstraint = iconView.widthAnchor.constraint(equalToConstant: 0)
-        iconTrailingToFieldLeading = iconView.trailingAnchor.constraint(
-            equalTo: textField.leadingAnchor, constant: 0)
+        // textField sits to the *right* of the icon: text.leading = icon.trailing + gap.
+        iconTrailingToFieldLeading = textField.leadingAnchor.constraint(
+            equalTo: iconView.trailingAnchor, constant: 0)
 
         NSLayoutConstraint.activate([
             // Label
