@@ -15,8 +15,8 @@ final class HomeViewController: UIViewController {
 
     private let tableView = UITableView()
 
-    private let loadingView: FUILoadingView = {
-        let v = FUILoadingView()
+    private let loadingView: FUILoading = {
+        let v = FUILoading()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.isHidden = true
         return v

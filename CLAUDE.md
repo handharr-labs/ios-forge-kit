@@ -8,8 +8,9 @@ handharr-labs · iOS Forge Kit — shared SPM packages for UIKit/SwiftUI apps. T
 - **Design Principles (What & Why):** `docs/principles/forge-kit/design-principles.md`
 - **Conventions (What, How, When):** `docs/principles/forge-kit/conventions.md`
 - **Directory Structure (What & Where):** `docs/principles/forge-kit/directory-structure.md`
-- **Tiered Design System (Tiers, Brand Packages, Rules):** `docs/principles/forge-kit/tiered-design-system.md`
 - **iOS Architecture (feature-layer reference):** `docs/principles/ios-architecture/` → links `docs/prep/ios-app-system-design-philosophy.md`
+
+> No tiering on mobile — the Bronze/Silver/Gold model was dropped for the iOS DS (2026-06-29). `ForgeUI` is a single un-tiered, SwiftUI-first design system organized by atomic-design tier (atoms/molecules/organisms).
 
 ## Principles
 
@@ -32,7 +33,7 @@ One root `Package.swift` exposes three library products. Downstream apps install
 |---|---|---|
 | `Core` | Platform-agnostic | `FetchPolicy`, `Request<Query,Path>`, `AnalyticsEvent`/`AnalyticsGatewayProtocol` (+ Console/NoOp). No UIKit, no deps. |
 | `AppleClient` | Apple-platform IO | `APIClient`, `WebSocketClient` (actor) + `ChannelRouter`, image loading, `LocalDataSourceProtocol`, `Coordinator`. Deps: `Core`. |
-| `ForgeUI` | Design system | Token-first hybrid UIKit + SwiftUI components; `FUI*` prefix; `*Configuration` API. Single base tier (future Bronze). |
+| `ForgeUI` | Design system | Token-first, SwiftUI-first UIKit + SwiftUI components; `FUI*` prefix; `*Configuration` API. Un-tiered; organized by atomic-design tier (atoms/molecules/organisms). |
 
 ## Key Rules
 

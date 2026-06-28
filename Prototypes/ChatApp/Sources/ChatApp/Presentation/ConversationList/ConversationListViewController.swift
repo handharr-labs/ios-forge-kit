@@ -18,15 +18,14 @@ public final class ConversationListViewController: UIViewController {
         return tv
     }()
 
-    private lazy var emptyStateView: FUIEmptyStateView = {
-        let v = FUIEmptyStateView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.isHidden = true
-        v.configure(with: FUIEmptyStateConfiguration(
+    private lazy var emptyStateView: UIHostingView<FUIEmptyState> = {
+        let v = UIHostingView(rootView: FUIEmptyState(
             systemImageName: "bubble.left.and.bubble.right",
             title: "No Conversations",
             subtitle: "Your messages will appear here."
         ))
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.isHidden = true
         return v
     }()
 

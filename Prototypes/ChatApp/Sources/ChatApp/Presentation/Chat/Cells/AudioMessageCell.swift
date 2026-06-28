@@ -2,8 +2,8 @@ import UIKit
 import ForgeUI
 
 final class AudioMessageCell: UICollectionViewCell {
-    private let playerView: FUIAudioPlayerView = {
-        let v = FUIAudioPlayerView()
+    private let playerView: FUIAudioPlayer = {
+        let v = FUIAudioPlayer()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()

@@ -50,7 +50,7 @@ final class HotelListViewController: UITableViewController {
             .sink { [weak self] loading in
                 guard let self else { return }
                 if loading {
-                    let footer = FUILoadingView()
+                    let footer = FUILoading()
                     footer.configure(with: FUILoadingConfiguration())
                     footer.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 56)
                     tableView.tableFooterView = footer

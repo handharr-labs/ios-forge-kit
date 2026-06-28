@@ -16,22 +16,21 @@ final class TrackListViewController: UIViewController {
     private let tableView = UITableView()
     private let searchController = UISearchController(searchResultsController: nil)
 
-    private let loadingView: FUILoadingView = {
-        let v = FUILoadingView()
+    private let loadingView: FUILoading = {
+        let v = FUILoading()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.isHidden = true
         return v
     }()
 
-    private let emptyStateView: FUIEmptyStateView = {
-        let v = FUIEmptyStateView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.isHidden = true
-        v.configure(with: FUIEmptyStateConfiguration(
+    private let emptyStateView: UIHostingView<FUIEmptyState> = {
+        let v = UIHostingView(rootView: FUIEmptyState(
             systemImageName: "music.note.list",
             title: "No Results",
             subtitle: "Search for a track to get started."
         ))
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.isHidden = true
         return v
     }()
 

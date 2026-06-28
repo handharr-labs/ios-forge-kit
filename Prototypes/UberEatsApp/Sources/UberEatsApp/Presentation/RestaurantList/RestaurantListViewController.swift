@@ -15,8 +15,8 @@ final class RestaurantListViewController: UIViewController {
         return tv
     }()
 
-    private let loadingView: FUILoadingView = {
-        let v = FUILoadingView()
+    private let loadingView: FUILoading = {
+        let v = FUILoading()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()

@@ -4,8 +4,8 @@ import ForgeUI
 final class ConversationCell: UITableViewCell {
     static let reuseIdentifier = "ConversationCell"
 
-    private let avatarView: FUIAvatarView = {
-        let v = FUIAvatarView()
+    private let avatarView: UIHostingView<FUIAvatar> = {
+        let v = UIHostingView(rootView: FUIAvatar(name: "", size: .medium))
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -35,8 +35,8 @@ final class ConversationCell: UITableViewCell {
         return l
     }()
 
-    private let badgeView: FUIBadgeView = {
-        let v = FUIBadgeView()
+    private let badgeView: UIHostingView<FUIBadge> = {
+        let v = UIHostingView(rootView: FUIBadge(count: 0))
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -49,11 +49,11 @@ final class ConversationCell: UITableViewCell {
     required init?(coder: NSCoder) { fatalError() }
 
     func configure(with model: ConversationUIModel) {
-        avatarView.configure(with: FUIAvatarConfiguration(name: model.title, size: .medium))
+        avatarView.update(rootView: FUIAvatar(name: model.title, size: .medium))
         titleLabel.text = model.title
         lastMessageLabel.text = model.lastMessage
         timestampLabel.text = model.timestamp
-        badgeView.configure(with: FUIBadgeConfiguration(count: model.unreadCount))
+        badgeView.update(rootView: FUIBadge(count: model.unreadCount))
     }
 
     private func setupViews() {

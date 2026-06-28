@@ -7,8 +7,8 @@ final class PlaylistDetailViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
 
     private let tableView = UITableView()
-    private let loadingView: FUILoadingView = {
-        let v = FUILoadingView()
+    private let loadingView: FUILoading = {
+        let v = FUILoading()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()

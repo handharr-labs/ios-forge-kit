@@ -31,8 +31,8 @@ final class BasketViewController: UIViewController {
         return b
     }()
 
-    private let loadingView: FUILoadingView = {
-        let v = FUILoadingView()
+    private let loadingView: FUILoading = {
+        let v = FUILoading()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()

@@ -4,8 +4,8 @@ import ForgeUI
 final class TrackCell: UITableViewCell {
     static let reuseID = "TrackCell"
 
-    private let rowView: FUITrackRowView = {
-        let v = FUITrackRowView()
+    private let rowView: FUITrackRow = {
+        let v = FUITrackRow()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
