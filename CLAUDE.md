@@ -1,52 +1,69 @@
-# CLAUDE.md — Melodify
+# CLAUDE.md — iOS Forge Kit
 
-Practice iOS app built for **mid-level iOS interview preparation**.
-
-## Purpose
-
-Melodify is a UIKit + Clean Architecture practice project. It simulates a realistic interview codebase — the kind you'd be given to refactor or extend in a live coding session. Every architectural decision here is intentional and should be explainable out loud.
+handharr-labs · iOS Forge Kit — shared SPM packages for UIKit/SwiftUI apps. The iOS counterpart of the Web Forge Kit.
 
 ## Architecture
 
+- **Glossary (All Terms):** `docs/principles/forge-kit/glossary.md`
+- **Design Principles (What & Why):** `docs/principles/forge-kit/design-principles.md`
+- **Conventions (What, How, When):** `docs/principles/forge-kit/conventions.md`
+- **Directory Structure (What & Where):** `docs/principles/forge-kit/directory-structure.md`
+- **Tiered Design System (Tiers, Brand Packages, Rules):** `docs/principles/forge-kit/tiered-design-system.md`
+- **iOS Architecture (feature-layer reference):** `docs/principles/ios-architecture/` → links `docs/ios-app-system-design-philosophy.md`
+
+## Principles
+
+Clean Architecture · DRY · SOLID — apply to all new code.
+
+**Layer dependency rule:** Presentation → Domain ← Data. Domain depends on nothing.
+
 ```
-Presentation  →  ViewController + ViewModel (Combine @Published)
-Domain        →  UseCase + Protocol + Param + FetchPolicy + Model
-Data          →  Repository + DataSource + DTO + Mapper + APIClient
-Application   →  AppDelegate (UIKit, no SceneDelegate)
+Presentation  →  ViewController + ViewModel (@MainActor, Combine @Published)
+Domain        →  UseCase + RepositoryProtocol + Request + FetchPolicy + Model + Service/Spec
+Data          →  Repository + DataSource + DTO + Mapper + APIRequest
+Application    →  Coordinator (DI composition root; owns UINavigationController)
 ```
 
-Layer dependency rule: **Presentation → Domain ← Data**. Domain depends on nothing.
+## Packages
 
-## APIs
+One root `Package.swift` exposes three library products. Downstream apps install via `.package(url:, from:)`; playground apps via `.package(name: "iOSForgeKit", path: "..")` + `.product(name:package:)`.
 
-| Data | Source |
-|---|---|
-| Track search | iTunes Search API — `https://itunes.apple.com/search` |
-| Track detail | iTunes Lookup API — `https://itunes.apple.com/lookup?id={id}` |
-| Playlists CRUD | MockAPI.io — `https://6a09e642e7e3f433d483900b.mockapi.io/api/v1/playlist` |
+| Product | Scope | Purpose |
+|---|---|---|
+| `Core` | Platform-agnostic | `FetchPolicy`, `Request<Query,Path>`, `AnalyticsEvent`/`AnalyticsGatewayProtocol` (+ Console/NoOp). No UIKit, no deps. |
+| `AppleClient` | Apple-platform IO | `APIClient`, `WebSocketClient` (actor) + `ChannelRouter`, image loading, `LocalDataSourceProtocol`, `Coordinator`. Deps: `Core`. |
+| `ForgeUI` | Design system | Token-first hybrid UIKit + SwiftUI components; `FUI*` prefix; `*Configuration` API. Single base tier (future Bronze). |
+
+## Key Rules
+
+- Domain never imports `AppleClient`, `ForgeUI`, Infrastructure, or External (UIKit, URLSession, AVFoundation).
+- `Core` has zero internal/UIKit deps. `AppleClient` depends on `Core`. `ForgeUI` is standalone.
+- Only the Data layer imports `Core`/`AppleClient`; only Presentation + Application import `ForgeUI`.
+- DI is manual initializer injection at the **Coordinator** — no `ServiceLocator`.
+- `ForgeUI` holds no domain or feature logic. `MDS*` symbols are retired in favor of `FUI*`.
+- Features live in downstream apps (or the playground), never in the kit packages.
 
 ## Key Patterns to Know Cold
 
 - DTO → Mapper → Domain Model (Mapper is the only type that knows both)
-- `FetchPolicy` (.fresh / .cached / .strict) travels from ViewModel to Repository
-- Typed `Param` structs on every UseCase — adding a field doesn't break call sites
-- `@MainActor` on ViewModel — all state mutations on main thread, no `DispatchQueue.main.async`
-- `async let` for 2 concurrent fetches, `withThrowingTaskGroup` for N
-- `defer { isLoading = false }` — guaranteed cleanup on success and failure
-- `[weak self]` in all closures to avoid retain cycles
+- `FetchPolicy` (.fresh / .cached / .strict) travels on `Request` from ViewModel to Repository
+- `Request<Query, Path>` is the unified UseCase input — adding a field doesn't break call sites; HTTP structs use `*APIRequest`
+- `@MainActor` on ViewModel — all state mutation on main, no `DispatchQueue.main.async`
+- `actor` for shared mutable transport (`WebSocketClient`); one socket, channel-multiplexed
+- `async let` for a fixed N concurrent fetches, `withThrowingTaskGroup` for variable N
+- `defer { isLoading = false }` · `[weak self]` in escaping closures
 - Unit tests: mock the layer below, assert on the layer you just built
 
-## Entry Point
+## Prototypes + Playground
 
-`AppDelegate.swift` — `UIApplicationSceneManifest_Generation` is disabled in build settings.
-Window is wired in `application(_:didFinishLaunchingWithOptions:)`.
+The kit ships with prototype app modules and a runnable playground that exercises them — neither is published.
 
-## Temp Docs
+- **Prototype modules:** `Prototypes/{MusicApp, ChatApp, HotelBookingApp, StoryViewerApp, UberEatsApp}` — each a self-contained SPM package with its own public `Coordinator`, consuming the kit via `.package(name: "iOSForgeKit", path: "../..")`.
+- **Playground host:** `playground/Playground.xcodeproj` + `playground/Playground/` — the only runnable target. `HomeViewController` hub ("Forge Kit") launches each prototype via Coordinators and opens the ForgeUI catalog (`ForgeUICatalogViewController`). Entry: `AppDelegate` + `SceneDelegate`; deep links + notifications wired here.
+- **APIs used by the prototypes:** iTunes Search/Lookup, MockAPI.io (playlist CRUD), and mock JSON local sources.
+- Build/run: open `playground/Playground.xcodeproj`, scheme `Playground`, any iOS simulator.
+- The legacy `Melodify` host target was retired ("no more melodify"); its music code already lived in `MusicApp`.
 
-| File | Purpose |
-|---|---|
-| `temp-dir/next-step.md` | Recruiter email + interview prep checklist + architecture notes + algorithm cheat sheet |
-| `temp-dir/progress.md` | Session progress, file list, pending tasks |
-| `temp-dir/mockapi-setup.md` | MockAPI.io setup + endpoint reference |
-| `temp-dir/hr-itvw.md` | HR interview notes |
-| `temp-dir/ios-music-streaming-system-design.md` | iOS music streaming system design — HLS, architecture, streaming deep dive |
+## Temp / Interview Docs
+
+`temp-dir/` and `docs/{SystemDesign,scenarios,deck,conventions}/` hold interview-prep material and per-app system designs. `docs/ios-app-system-design-philosophy.md` is the generic iOS app skeleton referenced by the `philosophy-*` skills — do not relocate it.
