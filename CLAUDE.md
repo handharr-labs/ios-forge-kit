@@ -9,7 +9,7 @@ handharr-labs · iOS Forge Kit — shared SPM packages for UIKit/SwiftUI apps. T
 - **Conventions (What, How, When):** `docs/principles/forge-kit/conventions.md`
 - **Directory Structure (What & Where):** `docs/principles/forge-kit/directory-structure.md`
 - **Tiered Design System (Tiers, Brand Packages, Rules):** `docs/principles/forge-kit/tiered-design-system.md`
-- **iOS Architecture (feature-layer reference):** `docs/principles/ios-architecture/` → links `docs/ios-app-system-design-philosophy.md`
+- **iOS Architecture (feature-layer reference):** `docs/principles/ios-architecture/` → links `docs/prep/ios-app-system-design-philosophy.md`
 
 ## Principles
 
@@ -66,4 +66,4 @@ The kit ships with prototype app modules and a runnable playground that exercise
 
 ## Temp / Interview Docs
 
-`temp-dir/` and `docs/{SystemDesign,scenarios,deck,conventions}/` hold interview-prep material and per-app system designs. `docs/ios-app-system-design-philosophy.md` is the generic iOS app skeleton referenced by the `philosophy-*` skills — do not relocate it.
+`docs/prep/` holds all interview-prep material — `ios-app-system-design-philosophy.md` (the generic iOS app skeleton), `SystemDesign/` (per-app writeups), `scenarios/`, and `conventions/` — maintained by the `sysdesign-*` skills. `temp-dir/` holds scratch prep notes.

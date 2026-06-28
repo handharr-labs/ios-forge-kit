@@ -8,3 +8,10 @@ xcuserdata/
 
 # macOS
 .DS_Store
+
+# Local-only art/scratch
+docs/art-module/
+
+# Local-only: interview prep + Claude tooling (kept out of the public repo)
+docs/prep/
+.claude/
