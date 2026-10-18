@@ -25,7 +25,7 @@ let package = Package(
         ),
 
         // Design system (single base tier — future ForgeUIBronze). No domain knowledge.
-        .target(name: "ForgeUI", path: "Sources/ForgeUI"),
+        .target(name: "ForgeUI", path: "Sources/ForgeUI", exclude: ["Bridge/README.md"]),
 
         // macOS-only components built on ForgeUI. Sources are wrapped in `#if os(macOS)`,
         // so the target is empty (but still builds) when the package is built for iOS.
