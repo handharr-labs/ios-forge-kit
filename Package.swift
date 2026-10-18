@@ -5,7 +5,7 @@ import PackageDescription
 // Mirrors the web forge kit: Core (platform-agnostic) → AppleClient (platform/IO) → ForgeUI (design system).
 let package = Package(
     name: "iOSForgeKit",
-    platforms: [.iOS(.v16)],
+    platforms: [.iOS(.v16), .macOS(.v14)],
     products: [
         .library(name: "Core", targets: ["Core"]),
         .library(name: "AppleClient", targets: ["AppleClient"]),
