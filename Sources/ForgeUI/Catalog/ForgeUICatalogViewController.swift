@@ -115,6 +115,7 @@ public final class ForgeUICatalogViewController: UIViewController {
                 CatalogItem(title: "FUIIcon", makePreview: makeFUIIconPreview),
                 CatalogItem(title: "FUIIconButton", makePreview: makeFUIIconButtonPreview),
                 CatalogItem(title: "FUITag", makePreview: makeFUITagPreview),
+                CatalogItem(title: "FUIStatusDot", makePreview: makeFUIStatusDotPreview),
                 CatalogItem(title: "FUIDivider", makePreview: makeFUIDividerPreview, fillsWidth: true),
                 CatalogItem(title: "FUICheckbox", makePreview: makeFUICheckboxPreview),
                 CatalogItem(title: "FUIRadio", makePreview: makeFUIRadioPreview),
@@ -129,6 +130,7 @@ public final class ForgeUICatalogViewController: UIViewController {
             ]),
             CatalogSection(title: "Molecules (SwiftUI)", items: [
                 CatalogItem(title: "FUICard", makePreview: makeFUICardPreview, fillsWidth: true),
+                CatalogItem(title: "FUIListRow", makePreview: makeFUIListRowPreview, fillsWidth: true),
                 CatalogItem(title: "FUIBanner", makePreview: makeFUIBannerPreview, fillsWidth: true),
                 CatalogItem(title: "FUIChip", makePreview: makeFUIChipPreview),
                 CatalogItem(title: "FUICheckboxListTile", makePreview: makeFUICheckboxListTilePreview, fillsWidth: true),
@@ -640,6 +642,21 @@ private extension ForgeUICatalogViewController {
         return UIHostingView(rootView: view)
     }
 
+    func makeFUIStatusDotPreview() -> UIView {
+        let view = HStack(spacing: Spacing.md) {
+            ForEach(FUIStatus.allCases, id: \.self) { status in
+                VStack(spacing: Spacing.xs) {
+                    FUIStatusDot(status: status)
+                    FUIText(status.accessibilityName, style: .caption)
+                }
+            }
+            FUIStatusDot(status: .info, size: .small)
+            FUIStatusDot(status: .info, size: .large)
+        }
+        .padding(Spacing.sm)
+        return UIHostingView(rootView: view)
+    }
+
     func makeFUIDividerPreview() -> UIView {
         let view = VStack(spacing: Spacing.sm) {
             FUIText("Above", style: .body)
@@ -757,6 +774,20 @@ private extension ForgeUICatalogViewController {
             }
         }
         .padding(Spacing.sm)
+        return UIHostingView(rootView: view)
+    }
+
+    func makeFUIListRowPreview() -> UIView {
+        let view = VStack(spacing: 0) {
+            FUIListRow(title: "Text only", subtitle: "With a subtitle", meta: "2m")
+            FUIDivider(axis: .horizontal)
+            FUIListRow(title: "Leading icon", icon: FUIIcons.person) {
+                FUIBadge(count: 3)
+            }
+            FUIDivider(axis: .horizontal)
+            FUIListRow(title: "Leading status", subtitle: "Deploy finished", status: .success)
+        }
+        .padding(.horizontal, Spacing.sm)
         return UIHostingView(rootView: view)
     }
 

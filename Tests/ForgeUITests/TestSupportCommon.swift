@@ -32,3 +32,16 @@ extension XCTestCase {
         return (r, g, b, a)
     }
 }
+
+extension XCTestCase {
+    /// Natural size of a SwiftUI view when hosted natively (`UIHostingController` / `NSHostingView`).
+    @MainActor
+    func fui_fittingSize<V: View>(of view: V) -> CGSize {
+        #if canImport(UIKit)
+        UIHostingController(rootView: view)
+            .sizeThatFits(in: CGSize(width: 320, height: CGFloat.greatestFiniteMagnitude))
+        #else
+        NSHostingView(rootView: view).fittingSize
+        #endif
+    }
+}
