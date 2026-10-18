@@ -18,7 +18,8 @@
 //              FUIToggleListTile, FUISegmentedControl, FUISelect, FUIStepper,
 //              FUIToast(.fuiToast), FUITimeline, FUIChatBubble, FUIFileUpload,
 //              FUILoadingOverlay
-//   Organisms: FUIDialog(.fuiDialog), FUITabs, FUIAccordion, FUIBottomNavBar,
+//   Organisms: FUIDialog(.fuiDialog), FUITextSheet(.fuiTextSheet), FUITabs,
+//              FUIAccordion, FUIBottomNavBar,
 //              FUIBottomSheet(.fuiBottomSheet), FUIContextMenu(.fuiContextMenu),
 //              FUICalendar, FUICountryPicker(.fuiCountryPicker), FUIStories,
 //              FUIEmptyState
