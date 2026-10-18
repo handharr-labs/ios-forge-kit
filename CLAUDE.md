@@ -32,7 +32,7 @@ One root `Package.swift` exposes four library products (iOS 16+, macOS 14+). Dow
 | Product | Platforms | Scope | Purpose |
 |---|---|---|---|
 | `Core` | iOS, macOS | Platform-agnostic | `FetchPolicy`, `Request<Query,Path>`, `AnalyticsEvent`/`AnalyticsGatewayProtocol` (+ Console/NoOp). No UIKit, no deps. |
-| `AppleClient` | iOS, macOS | Apple-platform IO | `APIClient`, `WebSocketClient` (actor) + `ChannelRouter`, image loading, `LocalDataSourceProtocol`, `Coordinator` (UIKit only). Deps: `Core`. |
+| `AppleClient` | iOS, macOS | Apple-platform IO | `APIClient`, `WebSocketClient` (actor) + `ChannelRouter`, image loading, `LocalDataSourceProtocol`, `Coordinator` (UIKit only), `ProcessRunner` (macOS only: `run` with timeout, `spawnDetached`). Deps: `Core`. |
 | `ForgeUI` | iOS, macOS (SwiftUI parts only) | Design system | Token-first, SwiftUI-first UIKit + SwiftUI components; `FUI*` prefix; SwiftUI takes inputs via `View` init, UIKit uses `*Configuration`. Un-tiered; organized by atomic-design tier (atoms/molecules/organisms). |
 | `ForgeUIMac` | macOS only (empty on iOS) | macOS components | `FUISidebarItem`, `FUIPanel`, `FUISectionHeader`, `ForgeUIMacCatalog`. Deps: `ForgeUI`. |
 
@@ -42,6 +42,7 @@ One root `Package.swift` exposes four library products (iOS 16+, macOS 14+). Dow
 - SwiftUI components keep calling `Color(FUIColor.x)` (`Color(_: NSColor)` exists on macOS).
 - Every UIKit-only file (`Components/*/UIKit/**`, `Bridge/*`, `Catalog/*`, `UIView.applyShadow`) is wrapped in `#if canImport(UIKit)`. iOS-only modifiers use `#if os(iOS)`; iOS-idiom components (FUICountryPicker, FUIBottomNavBar, FUIBottomSheet, FUIStories) are wrapped whole in `#if os(iOS)`.
 - Cross-platform SwiftUI components go in `ForgeUI`. macOS-only components go in `ForgeUIMac` (`Sources/ForgeUIMac/Components/<tier>/SwiftUI/`), every file wrapped in `#if os(macOS)`.
+- `AppleClient/Process/` (`ProcessRunnerProtocol`, `ProcessRunner`, `ProcessResult`) is macOS-only: every file is wrapped in `#if os(macOS)`, so the target still builds on iOS. Inject `ProcessRunnerProtocol` and fake it in tests; `run` captures output off the caller's actor, `spawnDetached` starts a child in its own session (`posix_spawn` + `POSIX_SPAWN_SETSID`).
 - Tests: UIKit-based tests are `#if canImport(UIKit)`; macOS tests are `#if os(macOS)` and render in `NSHostingView`. XCTest only.
 
 ## Build & Test
