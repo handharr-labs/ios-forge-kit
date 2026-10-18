@@ -27,18 +27,32 @@ Application    →  Coordinator (DI composition root; owns UINavigationControlle
 
 ## Packages
 
-One root `Package.swift` exposes three library products. Downstream apps install via `.package(url:, from:)`; playground apps via `.package(name: "iOSForgeKit", path: "..")` + `.product(name:package:)`.
+One root `Package.swift` exposes four library products (iOS 16+, macOS 14+). Downstream apps install via `.package(url:, from:)`; playground apps via `.package(name: "iOSForgeKit", path: "..")` + `.product(name:package:)`.
 
-| Product | Scope | Purpose |
-|---|---|---|
-| `Core` | Platform-agnostic | `FetchPolicy`, `Request<Query,Path>`, `AnalyticsEvent`/`AnalyticsGatewayProtocol` (+ Console/NoOp). No UIKit, no deps. |
-| `AppleClient` | Apple-platform IO | `APIClient`, `WebSocketClient` (actor) + `ChannelRouter`, image loading, `LocalDataSourceProtocol`, `Coordinator`. Deps: `Core`. |
-| `ForgeUI` | Design system | Token-first, SwiftUI-first UIKit + SwiftUI components; `FUI*` prefix; `*Configuration` API. Un-tiered; organized by atomic-design tier (atoms/molecules/organisms). |
+| Product | Platforms | Scope | Purpose |
+|---|---|---|---|
+| `Core` | iOS, macOS | Platform-agnostic | `FetchPolicy`, `Request<Query,Path>`, `AnalyticsEvent`/`AnalyticsGatewayProtocol` (+ Console/NoOp). No UIKit, no deps. |
+| `AppleClient` | iOS, macOS | Apple-platform IO | `APIClient`, `WebSocketClient` (actor) + `ChannelRouter`, image loading, `LocalDataSourceProtocol`, `Coordinator` (UIKit only). Deps: `Core`. |
+| `ForgeUI` | iOS, macOS (SwiftUI parts only) | Design system | Token-first, SwiftUI-first UIKit + SwiftUI components; `FUI*` prefix; SwiftUI takes inputs via `View` init, UIKit uses `*Configuration`. Un-tiered; organized by atomic-design tier (atoms/molecules/organisms). |
+| `ForgeUIMac` | macOS only (empty on iOS) | macOS components | `FUISidebarItem`, `FUIPanel`, `FUISectionHeader`, `ForgeUIMacCatalog`. Deps: `ForgeUI`. |
+
+## macOS Rules
+
+- Tokens are typed `PlatformColor` / `PlatformFont` (`Tokens/PlatformTypes.swift`): `UIColor`/`UIFont` under `canImport(UIKit)`, else `NSColor`/`NSFont`. Never write `UIColor`/`UIFont` in token or SwiftUI code. Colour mapping table lives in `Tokens/Color.swift`; brand RGB is identical on both platforms.
+- SwiftUI components keep calling `Color(FUIColor.x)` (`Color(_: NSColor)` exists on macOS).
+- Every UIKit-only file (`Components/*/UIKit/**`, `Bridge/*`, `Catalog/*`, `UIView.applyShadow`) is wrapped in `#if canImport(UIKit)`. iOS-only modifiers use `#if os(iOS)`; iOS-idiom components (FUICountryPicker, FUIBottomNavBar, FUIBottomSheet, FUIStories) are wrapped whole in `#if os(iOS)`.
+- Cross-platform SwiftUI components go in `ForgeUI`. macOS-only components go in `ForgeUIMac` (`Sources/ForgeUIMac/Components/<tier>/SwiftUI/`), every file wrapped in `#if os(macOS)`.
+- Tests: UIKit-based tests are `#if canImport(UIKit)`; macOS tests are `#if os(macOS)` and render in `NSHostingView`. XCTest only.
+
+## Build & Test
+
+- macOS: `swift build` and `swift test` at the repo root.
+- iOS: `xcodebuild -scheme iOSForgeKit-Package -destination 'platform=iOS Simulator,name=<iPhone sim>' test`; playground: `xcodebuild -project playground/Playground.xcodeproj -scheme Playground -destination 'generic/platform=iOS Simulator' build`.
 
 ## Key Rules
 
 - Domain never imports `AppleClient`, `ForgeUI`, Infrastructure, or External (UIKit, URLSession, AVFoundation).
-- `Core` has zero internal/UIKit deps. `AppleClient` depends on `Core`. `ForgeUI` is standalone.
+- `Core` has zero internal/UIKit deps. `AppleClient` depends on `Core`. `ForgeUI` is standalone. `ForgeUIMac` depends on `ForgeUI`.
 - Only the Data layer imports `Core`/`AppleClient`; only Presentation + Application import `ForgeUI`.
 - DI is manual initializer injection at the **Coordinator** — no `ServiceLocator`.
 - `ForgeUI` holds no domain or feature logic. `MDS*` symbols are retired in favor of `FUI*`.
