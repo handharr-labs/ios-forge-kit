@@ -58,6 +58,17 @@ public enum FUIIcons {
     public static let star = "star"
     public static let starFilled = "star.fill"
 
+    // Workspace / system
+    public static let terminal = "terminal"
+    public static let clock = "clock"
+    public static let folder = "folder"
+    public static let copy = "doc.on.doc"
+    public static let fileText = "doc.text"
+    public static let externalLink = "arrow.up.forward.square"
+    public static let visibility = "eye"
+    public static let visibilityCircle = "eye.circle"
+    public static let visibilityCircleFilled = "eye.circle.fill"
+
     // Selection controls
     public static let checkboxOn = "checkmark.square.fill"
     public static let checkboxOff = "square"

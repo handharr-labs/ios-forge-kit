@@ -40,4 +40,18 @@ final class FUIIconsTests: XCTestCase {
         XCTAssertEqual(FUIIcons.warning, "exclamationmark.triangle.fill")
         XCTAssertEqual(FUIIcons.error, "xmark.octagon.fill")
     }
+
+    func testWorkspaceGlyphsResolveToSFSymbols() {
+        let names = [
+            FUIIcons.terminal, FUIIcons.clock, FUIIcons.folder, FUIIcons.copy, FUIIcons.fileText,
+            FUIIcons.externalLink, FUIIcons.visibility, FUIIcons.visibilityCircle,
+            FUIIcons.visibilityCircleFilled,
+        ]
+        for name in names {
+            XCTAssertTrue(fui_symbolExists(name), "'\(name)' is not a valid SF Symbol")
+        }
+        XCTAssertEqual(FUIIcons.terminal, "terminal")
+        XCTAssertEqual(FUIIcons.visibilityCircle, "eye.circle")
+        XCTAssertEqual(FUIIcons.visibilityCircleFilled, "eye.circle.fill")
+    }
 }
