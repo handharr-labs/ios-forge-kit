@@ -13,7 +13,7 @@
 //   Atoms:     FUIText, FUIIcon, FUIIconButton, FUITag, FUIDivider, FUICheckbox,
 //              FUIRadio, FUISwitch, FUIShimmer, FUIProgressIndicator, FUISlider,
 //              FUITooltip(.fuiTooltip), FUIImage, FUIFab, FUISearchField,
-//              FUIButton (ButtonStyle), FUIBadge (+ .mdsBadge), FUIAvatar
+//              FUIButton (ButtonStyle), FUIBadge (+ .mdsBadge), FUIAvatar, FUITextInput
 //   Molecules: FUICard, FUIBanner, FUIChip, FUICheckboxListTile, FUIRadioListTile,
 //              FUIToggleListTile, FUISegmentedControl, FUISelect, FUIStepper,
 //              FUIToast(.fuiToast), FUITimeline, FUIChatBubble, FUIFileUpload,
