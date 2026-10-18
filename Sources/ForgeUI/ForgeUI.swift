@@ -17,7 +17,7 @@
 //   Molecules: FUICard, FUIBanner, FUIChip, FUICheckboxListTile, FUIRadioListTile,
 //              FUIToggleListTile, FUISegmentedControl, FUISelect, FUIStepper,
 //              FUIToast(.fuiToast), FUITimeline, FUIChatBubble, FUIFileUpload,
-//              FUILoadingOverlay
+//              FUILoadingOverlay, FUITextArea
 //   Organisms: FUIDialog(.fuiDialog), FUITextSheet(.fuiTextSheet), FUITabs,
 //              FUIAccordion, FUIBottomNavBar,
 //              FUIBottomSheet(.fuiBottomSheet), FUIContextMenu(.fuiContextMenu),
