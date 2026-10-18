@@ -2,7 +2,7 @@
 import PackageDescription
 
 // iOS Forge Kit — shared packages for handharr-labs iOS apps.
-// Mirrors the web forge kit: Core (platform-agnostic) → AppleClient (platform/IO) → ForgeUI (design system).
+// Mirrors the web forge kit: Core (platform-agnostic) → AppleClient (platform/IO) → ForgeUI (design system) → ForgeUIMac (macOS components).
 let package = Package(
     name: "iOSForgeKit",
     platforms: [.iOS(.v16), .macOS(.v14)],
@@ -10,6 +10,7 @@ let package = Package(
         .library(name: "Core", targets: ["Core"]),
         .library(name: "AppleClient", targets: ["AppleClient"]),
         .library(name: "ForgeUI", targets: ["ForgeUI"]),
+        .library(name: "ForgeUIMac", targets: ["ForgeUIMac"]),
     ],
     targets: [
         // Platform-agnostic architecture primitives — depends on nothing.
@@ -26,8 +27,13 @@ let package = Package(
         // Design system (single base tier — future ForgeUIBronze). No domain knowledge.
         .target(name: "ForgeUI", path: "Sources/ForgeUI"),
 
+        // macOS-only components built on ForgeUI. Sources are wrapped in `#if os(macOS)`,
+        // so the target is empty (but still builds) when the package is built for iOS.
+        .target(name: "ForgeUIMac", dependencies: ["ForgeUI"], path: "Sources/ForgeUIMac"),
+
         .testTarget(name: "CoreTests", dependencies: ["Core"], path: "Tests/CoreTests"),
         .testTarget(name: "AppleClientTests", dependencies: ["AppleClient"], path: "Tests/AppleClientTests"),
         .testTarget(name: "ForgeUITests", dependencies: ["ForgeUI"], path: "Tests/ForgeUITests"),
+        .testTarget(name: "ForgeUIMacTests", dependencies: ["ForgeUIMac"], path: "Tests/ForgeUIMacTests"),
     ]
 )
