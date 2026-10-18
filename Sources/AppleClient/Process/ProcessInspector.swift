@@ -18,10 +18,11 @@ public struct ProcessInspector: ProcessInspectorProtocol {
         guard capacity > 0 else { return [] }
         // Room for processes that start between the two calls.
         var pids = [Int32](repeating: 0, count: capacity + 64)
-        let bytes = pids.withUnsafeMutableBytes { proc_listallpids($0.baseAddress, Int32($0.count)) }
-        guard bytes > 0 else { return [] }
+        // `proc_listallpids` returns the number of pids it wrote (not bytes, despite the buffer size argument).
+        let count = pids.withUnsafeMutableBytes { proc_listallpids($0.baseAddress, Int32($0.count)) }
+        guard count > 0 else { return [] }
         let timebase = Self.timebase()
-        return pids.prefix(Int(bytes) / MemoryLayout<Int32>.size).compactMap { pid in
+        return pids.prefix(Int(count)).compactMap { pid in
             pid > 0 ? Self.read(pid: pid, timebase: timebase) : nil
         }
     }

@@ -50,6 +50,24 @@ final class ProcessInspectorTests: XCTestCase {
         XCTAssertEqual(ProcessInspector.parseProcArgs([]), [])
     }
 
+    func testListsEveryProcessOfThisUser() throws {
+        let ps = Process()
+        ps.executableURL = URL(fileURLWithPath: "/bin/ps")
+        ps.arguments = ["-x", "-o", "pid="]
+        let out = Pipe()
+        ps.standardOutput = out
+        try ps.run()
+        let data = out.fileHandleForReading.readDataToEndOfFile()
+        ps.waitUntilExit()
+        let expected = String(decoding: data, as: UTF8.self).split(whereSeparator: \.isNewline)
+            .compactMap { Int32($0.trimmingCharacters(in: .whitespaces)) }
+        let listed = Set(inspector.snapshot().map(\.pid))
+        let missing = expected.filter { !listed.contains($0) }
+        // A few may have exited between the two reads (ps itself is one).
+        XCTAssertGreaterThan(expected.count, 10)
+        XCTAssertLessThanOrEqual(missing.count, 3, "missing pids: \(missing)")
+    }
+
     func testChildStartedByTheRunnerAppearsWithItsArguments() throws {
         let runner: any ProcessRunnerProtocol = ProcessRunner()
         let pid = try runner.spawnDetached(URL(fileURLWithPath: "/bin/sleep"), arguments: ["2"], logFile: nil)
