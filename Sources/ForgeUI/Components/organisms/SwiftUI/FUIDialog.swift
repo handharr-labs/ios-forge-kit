@@ -3,6 +3,8 @@ import SwiftUI
 /// A centered alert-style dialog card with a title, message, and up to two
 /// actions. Present it via the `.fuiDialog(isPresented:...)` View extension,
 /// which dims the background and centers the card over the current content.
+/// Pass `isDestructive: true` to fill the primary button with the error colour
+/// (delete, discard, and other actions that cannot be undone).
 public struct FUIDialog: View {
     public let title: String
     public let message: String
@@ -10,6 +12,7 @@ public struct FUIDialog: View {
     public let onPrimary: () -> Void
     public let secondaryTitle: String?
     public let onSecondary: (() -> Void)?
+    public let isDestructive: Bool
 
     public init(
         title: String,
@@ -17,7 +20,8 @@ public struct FUIDialog: View {
         primaryTitle: String,
         onPrimary: @escaping () -> Void,
         secondaryTitle: String? = nil,
-        onSecondary: (() -> Void)? = nil
+        onSecondary: (() -> Void)? = nil,
+        isDestructive: Bool = false
     ) {
         self.title = title
         self.message = message
@@ -25,7 +29,11 @@ public struct FUIDialog: View {
         self.onPrimary = onPrimary
         self.secondaryTitle = secondaryTitle
         self.onSecondary = onSecondary
+        self.isDestructive = isDestructive
     }
+
+    /// Fill of the primary button: `error` when destructive, otherwise `primary`.
+    var primaryFill: PlatformColor { isDestructive ? FUIColor.error : FUIColor.primary }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
@@ -51,7 +59,7 @@ public struct FUIDialog: View {
                     .foregroundColor(Color(FUIColor.onPrimary))
                     .padding(.horizontal, Spacing.md)
                     .padding(.vertical, Spacing.sm)
-                    .background(Color(FUIColor.primary))
+                    .background(Color(primaryFill))
                     .cornerRadius(Radius.sm)
             }
             .padding(.top, Spacing.sm)
@@ -75,6 +83,7 @@ private struct FUIDialogModifier: ViewModifier {
     let onPrimary: () -> Void
     let secondaryTitle: String?
     let onSecondary: (() -> Void)?
+    let isDestructive: Bool
 
     func body(content: Content) -> some View {
         ZStack {
@@ -95,7 +104,8 @@ private struct FUIDialogModifier: ViewModifier {
                     onSecondary: secondaryTitle != nil ? {
                         isPresented = false
                         onSecondary?()
-                    } : nil
+                    } : nil,
+                    isDestructive: isDestructive
                 )
                 .transition(.opacity.combined(with: .scale(scale: 0.95)))
                 .animation(.easeOut(duration: 0.18), value: isPresented)
@@ -113,7 +123,8 @@ public extension View {
         primaryTitle: String,
         onPrimary: @escaping () -> Void,
         secondaryTitle: String? = nil,
-        onSecondary: (() -> Void)? = nil
+        onSecondary: (() -> Void)? = nil,
+        isDestructive: Bool = false
     ) -> some View {
         modifier(FUIDialogModifier(
             isPresented: isPresented,
@@ -122,7 +133,8 @@ public extension View {
             primaryTitle: primaryTitle,
             onPrimary: onPrimary,
             secondaryTitle: secondaryTitle,
-            onSecondary: onSecondary
+            onSecondary: onSecondary,
+            isDestructive: isDestructive
         ))
     }
 }
