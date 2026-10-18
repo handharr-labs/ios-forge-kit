@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import SwiftUI
 import UIKit
 
@@ -24,3 +25,4 @@ public final class FUIHostingController<Content: View>: UIHostingController<Cont
         fatalError("init(coder:) is not supported — host a SwiftUI view via init(rootView:)")
     }
 }
+#endif

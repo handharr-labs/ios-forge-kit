@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A fixed-length OTP / PIN entry composed of N visible cells backed by a single
@@ -161,3 +162,4 @@ private final class _OTPCellView: UIView {
         layer.borderWidth = isActive ? 1.5 : 1
     }
 }
+#endif

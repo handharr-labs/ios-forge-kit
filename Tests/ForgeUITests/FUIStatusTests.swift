@@ -29,8 +29,8 @@ final class FUIStatusTests: XCTestCase {
 
     func testEverySymbolNameIsAValidSFSymbol() {
         for status in FUIStatus.allCases {
-            XCTAssertNotNil(UIImage(systemName: status.symbolName),
-                            "\(status) symbol '\(status.symbolName)' is not a valid SF Symbol")
+            XCTAssertTrue(fui_symbolExists(status.symbolName),
+                          "\(status) symbol '\(status.symbolName)' is not a valid SF Symbol")
         }
     }
 
@@ -45,9 +45,7 @@ final class FUIStatusTests: XCTestCase {
 
     func testFillIsTranslucentForNonNeutralStatuses() {
         // Non-neutral fills are a 15% tint of the accent — alpha strictly below 1.
-        var alpha: CGFloat = 0
-        let resolved = fui_resolve(FUIStatus.info.fill, .light)
-        resolved.getRed(nil, green: nil, blue: nil, alpha: &alpha)
+        let alpha = fui_rgba(FUIStatus.info.fill, dark: false).alpha
         XCTAssertEqual(alpha, 0.15, accuracy: 0.001)
     }
 

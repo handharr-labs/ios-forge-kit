@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import XCTest
 @testable import ForgeUI
 
@@ -113,3 +114,4 @@ final class FUITextFieldTests: XCTestCase {
         XCTAssertEqual(changed, 1)
     }
 }
+#endif

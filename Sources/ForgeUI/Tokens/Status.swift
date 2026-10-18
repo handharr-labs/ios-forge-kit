@@ -1,4 +1,3 @@
-import UIKit
 import SwiftUI
 
 /// Semantic status used by status-bearing components (badge, tag, banner, toast,
@@ -12,7 +11,7 @@ public enum FUIStatus: CaseIterable, Sendable {
     case error
 
     /// The accent color — for dots, icons, borders, and solid fills.
-    public var color: UIColor {
+    public var color: PlatformColor {
         switch self {
         case .neutral: return FUIColor.textSecondary
         case .info:    return FUIColor.info
@@ -23,15 +22,15 @@ public enum FUIStatus: CaseIterable, Sendable {
     }
 
     /// A low-alpha tint of the accent for soft container backgrounds.
-    public var fill: UIColor {
+    public var fill: PlatformColor {
         switch self {
-        case .neutral: return UIColor.secondarySystemFill
+        case .neutral: return PlatformColor.secondarySystemFill
         default:       return color.withAlphaComponent(0.15)
         }
     }
 
     /// Content color to sit on top of `fill`.
-    public var onFill: UIColor {
+    public var onFill: PlatformColor {
         switch self {
         case .neutral: return FUIColor.textPrimary
         default:       return color

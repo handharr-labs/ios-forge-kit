@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 /// On/off toggle wrapping SwiftUI `Toggle`. Tinted with `FUIColor.primary`;
 /// label hidden so the caller composes its own label layout. Caller owns

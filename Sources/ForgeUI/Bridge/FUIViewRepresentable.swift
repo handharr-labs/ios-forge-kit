@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import SwiftUI
 import UIKit
 
@@ -32,3 +33,4 @@ public struct FUIViewRepresentable<V: UIView>: UIViewRepresentable {
 
     public func updateUIView(_ uiView: V, context: Context) { update(uiView) }
 }
+#endif

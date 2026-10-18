@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import Foundation
 
 public enum FUILoadingVariant {
@@ -14,3 +15,4 @@ public struct FUILoadingConfiguration {
         self.message = message
     }
 }
+#endif

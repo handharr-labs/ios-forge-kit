@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 public final class FUIPrimaryButton: UIButton {
@@ -42,3 +43,4 @@ public final class FUIPrimaryButton: UIButton {
         config.isLoading ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
     }
 }
+#endif

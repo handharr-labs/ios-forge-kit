@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 /// Translucent full-screen loading overlay for SwiftUI screens.
 /// Visually identical to FUILoading (fullscreen variant) — two implementations

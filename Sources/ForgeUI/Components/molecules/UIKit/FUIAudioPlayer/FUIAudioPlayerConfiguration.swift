@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import Foundation
 
 public struct FUIAudioPlayerConfiguration {
@@ -11,3 +12,4 @@ public struct FUIAudioPlayerConfiguration {
         self.variant = variant
     }
 }
+#endif

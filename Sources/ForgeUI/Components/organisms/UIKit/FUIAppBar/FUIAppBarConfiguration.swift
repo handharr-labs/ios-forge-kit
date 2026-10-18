@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// Drives which center content the app bar renders.
@@ -28,3 +29,4 @@ public struct FUIAppBarConfiguration {
         self.trailingIconNames = trailingIconNames
     }
 }
+#endif

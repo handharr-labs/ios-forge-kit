@@ -1,7 +1,7 @@
-import UIKit
+import CoreGraphics
 
 public struct ShadowToken: @unchecked Sendable {
-    public let color: UIColor
+    public let color: PlatformColor
     public let opacity: Float
     public let offset: CGSize
     public let radius: CGFloat
@@ -22,6 +22,9 @@ public enum Elevation {
     )
 }
 
+#if canImport(UIKit)
+import UIKit
+
 public extension UIView {
     func applyShadow(_ token: ShadowToken) {
         layer.shadowColor = token.color.cgColor
@@ -31,3 +34,4 @@ public extension UIView {
         layer.masksToBounds = false
     }
 }
+#endif

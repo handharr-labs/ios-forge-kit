@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 /// Native SwiftUI empty state: icon + title + subtitle + optional action button.
 /// Same token vocabulary as FUIEmptyStateView — no UIViewRepresentable wrapper

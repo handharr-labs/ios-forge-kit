@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import XCTest
 import SwiftUI
 @testable import ForgeUI
@@ -83,3 +84,4 @@ final class FUIBridgeTests: XCTestCase {
         XCTAssertEqual(FUIPrimaryButtonRepresentable(configuration: .init(title: "Go")).configuration.title, "Go")
     }
 }
+#endif

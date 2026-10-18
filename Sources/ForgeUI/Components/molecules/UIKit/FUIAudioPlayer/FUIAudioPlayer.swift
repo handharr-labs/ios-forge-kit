@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 public final class FUIAudioPlayer: UIView {
@@ -59,3 +60,4 @@ public final class FUIAudioPlayer: UIView {
         onPlayPause?()
     }
 }
+#endif

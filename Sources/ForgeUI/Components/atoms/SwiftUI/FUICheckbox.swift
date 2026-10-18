@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 /// Square checkbox backed by `FUIIcons.checkboxOn/checkboxOff` SF Symbols.
 /// Checked state tints with `FUIColor.primary`; disabled state uses

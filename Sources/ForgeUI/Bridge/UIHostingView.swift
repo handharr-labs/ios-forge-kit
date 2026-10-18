@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import SwiftUI
 import UIKit
 
@@ -32,3 +33,4 @@ public final class UIHostingView<Content: View>: UIView {
         host.rootView = rootView
     }
 }
+#endif

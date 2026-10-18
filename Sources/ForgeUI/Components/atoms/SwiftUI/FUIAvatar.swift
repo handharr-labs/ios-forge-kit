@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 /// Native SwiftUI avatar with async image loading and initials fallback.
 /// Same visual tokens as FUIAvatarView — no UIViewRepresentable wrapper needed

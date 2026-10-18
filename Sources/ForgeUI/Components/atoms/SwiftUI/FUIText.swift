@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 /// Maps the 8-step type scale to a SwiftUI-native typographic label.
 /// Use `FUITextStyle` to select the weight/size tier; `color` defaults to

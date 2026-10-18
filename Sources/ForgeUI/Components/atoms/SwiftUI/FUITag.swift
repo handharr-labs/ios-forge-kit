@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 /// Small static status pill. Background is the status `fill` (low-alpha tint);
 /// text is the status `onFill` color. Fully static — use `FUIBadge` for counts.

@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A single-row list item: optional leading icon, title + optional subtitle,
@@ -166,3 +167,4 @@ public final class FUIListTile: UIView {
         ])
     }
 }
+#endif

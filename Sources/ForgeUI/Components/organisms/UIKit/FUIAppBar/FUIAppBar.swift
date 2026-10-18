@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A top app bar with three variants: `.text`, `.logo`, and `.search`.
@@ -239,3 +240,4 @@ public final class FUIAppBar: UIView {
         ])
     }
 }
+#endif

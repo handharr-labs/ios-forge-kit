@@ -3,7 +3,7 @@ import SwiftUI
 @testable import ForgeUI
 
 /// Mirrors Flutter `fui_atoms_test.dart`. Atom value types + the UIKit atoms whose
-/// behavior is observable without a render harness (`FUIPrimaryButton`, `FUILoading`).
+/// behavior is observable without a render harness (`FUIPrimaryButton`, `FUILoading`; UIKit platforms only).
 @MainActor
 final class FUIAtomsTests: XCTestCase {
 
@@ -52,6 +52,7 @@ final class FUIAtomsTests: XCTestCase {
         XCTAssertEqual(FUIButtonStyle(variant: .outlined).variant, .outlined)
     }
 
+#if canImport(UIKit)
     // MARK: - FUIPrimaryButton (UIKit)
 
     func testPrimaryButtonShowsTitleWhenNotLoading() {
@@ -134,4 +135,5 @@ final class FUIAtomsTests: XCTestCase {
         XCTAssertNotEqual(view.backgroundColor, .clear)
         XCTAssertNotNil(view.backgroundColor)
     }
+#endif
 }

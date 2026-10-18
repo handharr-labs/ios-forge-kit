@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import Foundation
 
 public struct FUIPrimaryButtonConfiguration {
@@ -11,3 +12,4 @@ public struct FUIPrimaryButtonConfiguration {
         self.isLoading = isLoading
     }
 }
+#endif

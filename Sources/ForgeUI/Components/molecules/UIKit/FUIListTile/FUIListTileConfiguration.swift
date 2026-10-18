@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import Foundation
 
 /// Value-type configuration for `FUIListTile`.
@@ -25,3 +26,4 @@ public struct FUIListTileConfiguration {
         self.showsChevron = showsChevron
     }
 }
+#endif

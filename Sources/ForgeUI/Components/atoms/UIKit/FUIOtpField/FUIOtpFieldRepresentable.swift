@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import SwiftUI
 import UIKit
 
@@ -27,3 +28,4 @@ public struct FUIOtpFieldRepresentable: UIViewRepresentable {
 
     public func updateUIView(_ uiView: FUIOtpField, context: Context) {}
 }
+#endif

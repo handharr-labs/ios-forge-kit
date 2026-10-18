@@ -1,17 +1,28 @@
-import UIKit
 import SwiftUI
 
-/// 8-step type scale (color-free). UIKit `UIFont` is the source of truth; SwiftUI
+/// 8-step type scale (color-free). `PlatformFont` (`UIFont` / `NSFont`) is the source of truth; SwiftUI
 /// callers use the matching `Font.fui*` tokens below so both stacks render identically.
 public enum Typography {
-    public static let display: UIFont = .systemFont(ofSize: 28, weight: .bold)
-    public static let title: UIFont = .systemFont(ofSize: 16, weight: .semibold)
-    public static let headline: UIFont = .systemFont(ofSize: 17, weight: .semibold)
-    public static let subtitle: UIFont = .systemFont(ofSize: 15, weight: .medium)
-    public static let body: UIFont = .systemFont(ofSize: 14, weight: .regular)
-    public static let label: UIFont = .systemFont(ofSize: 13, weight: .semibold)
-    public static let caption: UIFont = .systemFont(ofSize: 12, weight: .regular)
-    public static let footnote: UIFont = .systemFont(ofSize: 11, weight: .regular)
+#if canImport(UIKit)
+    public static let display: PlatformFont = .systemFont(ofSize: 28, weight: .bold)
+    public static let title: PlatformFont = .systemFont(ofSize: 16, weight: .semibold)
+    public static let headline: PlatformFont = .systemFont(ofSize: 17, weight: .semibold)
+    public static let subtitle: PlatformFont = .systemFont(ofSize: 15, weight: .medium)
+    public static let body: PlatformFont = .systemFont(ofSize: 14, weight: .regular)
+    public static let label: PlatformFont = .systemFont(ofSize: 13, weight: .semibold)
+    public static let caption: PlatformFont = .systemFont(ofSize: 12, weight: .regular)
+    public static let footnote: PlatformFont = .systemFont(ofSize: 11, weight: .regular)
+#else
+    // NSFont isn't Sendable (UIFont is); these are immutable shared constants.
+    nonisolated(unsafe) public static let display: PlatformFont = .systemFont(ofSize: 28, weight: .bold)
+    nonisolated(unsafe) public static let title: PlatformFont = .systemFont(ofSize: 16, weight: .semibold)
+    nonisolated(unsafe) public static let headline: PlatformFont = .systemFont(ofSize: 17, weight: .semibold)
+    nonisolated(unsafe) public static let subtitle: PlatformFont = .systemFont(ofSize: 15, weight: .medium)
+    nonisolated(unsafe) public static let body: PlatformFont = .systemFont(ofSize: 14, weight: .regular)
+    nonisolated(unsafe) public static let label: PlatformFont = .systemFont(ofSize: 13, weight: .semibold)
+    nonisolated(unsafe) public static let caption: PlatformFont = .systemFont(ofSize: 12, weight: .regular)
+    nonisolated(unsafe) public static let footnote: PlatformFont = .systemFont(ofSize: 11, weight: .regular)
+#endif
 }
 
 /// SwiftUI mirror of `Typography` — same sizes/weights, so a SwiftUI component

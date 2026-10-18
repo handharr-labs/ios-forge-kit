@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import Foundation
 
 public enum FUIBubbleVariant {
@@ -16,3 +17,4 @@ public struct FUIMessageBubbleConfiguration {
         self.meta = meta
     }
 }
+#endif

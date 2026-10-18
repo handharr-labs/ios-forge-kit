@@ -22,7 +22,7 @@ final class FUIIconsTests: XCTestCase {
 
     func testSampledIconsAreValidSFSymbols() {
         for name in sampled {
-            XCTAssertNotNil(UIImage(systemName: name), "'\(name)' is not a valid SF Symbol")
+            XCTAssertTrue(fui_symbolExists(name), "'\(name)' is not a valid SF Symbol")
         }
     }
 

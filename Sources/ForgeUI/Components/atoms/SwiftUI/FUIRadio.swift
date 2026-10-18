@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 /// Single radio option within a group. The generic `Value` type lets the
 /// caller bind any `Hashable` domain value (enum, id, string, etc.).

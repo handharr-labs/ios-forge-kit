@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import Foundation
 
 /// Value-type configuration for `FUIPageControl`.
@@ -10,3 +11,4 @@ public struct FUIPageControlConfiguration {
         self.currentPage = currentPage
     }
 }
+#endif

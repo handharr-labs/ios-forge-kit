@@ -1,3 +1,4 @@
+#if os(iOS)
 import SwiftUI
 
 // MARK: - Model
@@ -191,3 +192,4 @@ private struct SegmentBar: View {
         }
     }
 }
+#endif

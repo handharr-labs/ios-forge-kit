@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 /// Visual treatment for `FUIIconButton`.
 /// - `plain`:  no background, icon in `textPrimary`.

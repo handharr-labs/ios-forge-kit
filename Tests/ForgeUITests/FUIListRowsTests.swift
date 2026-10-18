@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import XCTest
 @testable import ForgeUI
 
@@ -83,3 +84,4 @@ final class FUIListRowsTests: XCTestCase {
         XCTAssertEqual(bubble.backgroundColor, FUIColor.surfaceElevated)
     }
 }
+#endif

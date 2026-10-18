@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import SwiftUI
 import UIKit
 
@@ -28,3 +29,4 @@ public struct FUIPrimaryButtonRepresentable: UIViewRepresentable {
         uiView.configure(with: configuration)
     }
 }
+#endif

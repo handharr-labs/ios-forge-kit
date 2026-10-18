@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 /// Sizing tier for `FUIIcon`. Matches small/medium/large glyph scales used
 /// across the kit's component vocabulary.

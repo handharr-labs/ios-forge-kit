@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A token-styled page-indicator row wrapping `UIPageControl`.
@@ -51,3 +52,4 @@ public final class FUIPageControl: UIView {
         onPageChange?(pageControl.currentPage)
     }
 }
+#endif

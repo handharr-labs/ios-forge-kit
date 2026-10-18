@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import XCTest
 @testable import ForgeUI
 
@@ -73,3 +74,4 @@ final class FUIShellTests: XCTestCase {
         XCTAssertTrue(backTapped)
     }
 }
+#endif

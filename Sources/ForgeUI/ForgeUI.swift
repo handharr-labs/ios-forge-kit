@@ -35,6 +35,12 @@
 //   UIKit → SwiftUI: FUIViewRepresentable<V> (any UIView) + a named FUI*Representable
 //                    next to every UIKit component (FUITextFieldRepresentable, …)
 //
+// Platforms:
+//   iOS 16+ and macOS 14+. On macOS only the SwiftUI parts build: tokens are typed as
+//   PlatformColor / PlatformFont (UIColor/NSColor, UIFont/NSFont); every UIKit file is
+//   wrapped in `#if canImport(UIKit)`; iOS-idiom components (FUICountryPicker,
+//   FUIBottomNavBar, FUIBottomSheet, FUIStories) are `#if os(iOS)`.
+//
 // Catalog:
 //   ForgeUICatalogViewController  — live, in-app browser of every token + component
 //                                   (light/dark toggle); present from any host.

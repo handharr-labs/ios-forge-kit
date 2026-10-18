@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import SwiftUI
 import UIKit
 
@@ -24,3 +25,4 @@ public struct FUITextFieldRepresentable: UIViewRepresentable {
         uiView.configure(with: configuration)
     }
 }
+#endif

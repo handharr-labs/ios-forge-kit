@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import Foundation
 
 /// Value-type configuration for `FUITextField`.
@@ -26,3 +27,4 @@ public struct FUITextFieldConfiguration {
         self.errorText = errorText
     }
 }
+#endif

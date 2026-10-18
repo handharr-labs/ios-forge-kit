@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 public final class FUITrackRow: UIView {
@@ -84,3 +85,4 @@ public final class FUITrackRow: UIView {
         ])
     }
 }
+#endif

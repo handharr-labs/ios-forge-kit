@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 /// Standalone count badge — a primary-tinted capsule rendering `count` (or "99+").
 /// Renders nothing when `count <= 0`. Use `FUIBadgeModifier` / `.mdsBadge(count:)`

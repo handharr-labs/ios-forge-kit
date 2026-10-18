@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import Foundation
 
 public struct FUITrackRowConfiguration {
@@ -13,3 +14,4 @@ public struct FUITrackRowConfiguration {
         self.artworkURL = artworkURL
     }
 }
+#endif

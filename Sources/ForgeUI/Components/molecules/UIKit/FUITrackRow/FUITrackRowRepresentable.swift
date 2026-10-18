@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import SwiftUI
 import UIKit
 
@@ -17,3 +18,4 @@ public struct FUITrackRowRepresentable: UIViewRepresentable {
         uiView.configure(with: configuration)
     }
 }
+#endif

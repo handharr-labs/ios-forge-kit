@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A token-styled text input with an optional leading label, placeholder,
@@ -186,3 +187,4 @@ public final class FUITextField: UIView {
         ])
     }
 }
+#endif

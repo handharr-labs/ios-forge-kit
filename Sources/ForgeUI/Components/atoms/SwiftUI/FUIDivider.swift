@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 /// Hairline separator in `FUIColor.line`. Stretches to fill its parent along
 /// the chosen axis. Use `Axis.horizontal` (default) for row separators and

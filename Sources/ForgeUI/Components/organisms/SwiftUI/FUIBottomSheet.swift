@@ -1,3 +1,4 @@
+#if os(iOS)
 import SwiftUI
 
 /// A small grab handle drawn at the top of a `FUIBottomSheet` content area.
@@ -47,3 +48,4 @@ public extension View {
         ))
     }
 }
+#endif

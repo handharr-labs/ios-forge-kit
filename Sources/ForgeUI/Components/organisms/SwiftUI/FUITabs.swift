@@ -59,6 +59,7 @@ public struct FUITabs: View {
                 .background(Color(FUIColor.line))
 
             // Page content
+            #if os(iOS)
             TabView(selection: $selection) {
                 ForEach(Array(tabs.enumerated()), id: \.offset) { index, tab in
                     tab.view
@@ -66,6 +67,12 @@ public struct FUITabs: View {
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
+            #else
+            // The paged TabView style is iOS-only; macOS shows the selected tab's content.
+            if tabs.indices.contains(selection) {
+                tabs[selection].view
+            }
+            #endif
         }
     }
 }

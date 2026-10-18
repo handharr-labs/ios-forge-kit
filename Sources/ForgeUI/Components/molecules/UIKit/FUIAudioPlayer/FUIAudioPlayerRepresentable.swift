@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import SwiftUI
 import UIKit
 
@@ -23,3 +24,4 @@ public struct FUIAudioPlayerRepresentable: UIViewRepresentable {
         uiView.configure(with: configuration)
     }
 }
+#endif

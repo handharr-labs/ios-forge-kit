@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 public final class FUIMessageBubble: UIView {
@@ -50,3 +51,4 @@ public final class FUIMessageBubble: UIView {
         }
     }
 }
+#endif

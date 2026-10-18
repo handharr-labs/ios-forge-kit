@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 public final class FUILoading: UIView {
@@ -47,3 +48,4 @@ public final class FUILoading: UIView {
             : .clear
     }
 }
+#endif

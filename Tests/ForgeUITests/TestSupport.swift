@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 import XCTest
 @testable import ForgeUI
@@ -64,3 +65,4 @@ extension XCTestCase {
         color.resolvedColor(with: UITraitCollection(userInterfaceStyle: style))
     }
 }
+#endif

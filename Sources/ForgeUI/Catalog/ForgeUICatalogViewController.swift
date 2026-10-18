@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 import SwiftUI
 
@@ -1237,3 +1238,4 @@ private final class CatalogCell: UITableViewCell {
         ])
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if os(iOS)
 import SwiftUI
 
 // MARK: - Model
@@ -136,3 +137,4 @@ public extension View {
         ))
     }
 }
+#endif

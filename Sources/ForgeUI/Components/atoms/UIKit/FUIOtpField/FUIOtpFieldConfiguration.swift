@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import Foundation
 
 /// Value-type configuration for `FUIOtpField`.
@@ -9,3 +10,4 @@ public struct FUIOtpFieldConfiguration {
         self.length = length
     }
 }
+#endif

@@ -67,6 +67,7 @@ final class FUITokensTests: XCTestCase {
         XCTAssertEqual(Typography.footnote.pointSize, 11)
     }
 
+#if canImport(UIKit)
     func testTypographyDisplayIsLargestAndBold() {
         let sizes = [Typography.display, Typography.headline, Typography.title,
                      Typography.subtitle, Typography.body, Typography.label,
@@ -113,4 +114,5 @@ final class FUITokensTests: XCTestCase {
         XCTAssertLessThan(alpha, 1, "primaryMuted is a low-alpha wash")
         XCTAssertGreaterThan(alpha, 0)
     }
+#endif
 }
