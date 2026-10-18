@@ -69,6 +69,12 @@ public enum FUIIcons {
     public static let visibilityCircle = "eye.circle"
     public static let visibilityCircleFilled = "eye.circle.fill"
 
+    // Devices / playback
+    public static let device = "iphone"
+    public static let launch = "power"
+    public static let stop = "stop.fill"
+    public static let openWindow = "macwindow"
+
     // Selection controls
     public static let checkboxOn = "checkmark.square.fill"
     public static let checkboxOff = "square"
