@@ -136,9 +136,10 @@ public struct ProcessRunner: ProcessRunnerProtocol {
         let code = posix_spawn(&pid, path, &actions, &attr, argv, env)
         guard code == 0 else { throw ProcessRunnerError.spawnFailed(path: path, code: code) }
         // Reap the child when it exits so it never lingers as a zombie.
+        let child = pid
         DispatchQueue.global(qos: .utility).async {
             var status: Int32 = 0
-            while waitpid(pid, &status, 0) == -1 && errno == EINTR {}
+            while waitpid(child, &status, 0) == -1 && errno == EINTR {}
         }
         return pid
     }
