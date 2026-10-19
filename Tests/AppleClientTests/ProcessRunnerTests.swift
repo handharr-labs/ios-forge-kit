@@ -35,6 +35,23 @@ final class ProcessRunnerTests: XCTestCase {
         XCTAssertEqual(r.stderr.utf8.count, 2_000_000)
     }
 
+    func testManyConcurrentRunsDoNotStarveTheStderrDrain() async {
+        // More simultaneous runs than the global queue has threads: each run blocks one pool thread, so a
+        // drain queued on the same pool would never start and every run would hang.
+        let runner = self.runner
+        let sh = self.sh
+        let results = await withTaskGroup(of: ProcessResult.self) { group in
+            for _ in 0..<150 {
+                group.addTask { await runner.run(sh, arguments: ["-c", "echo out; echo err 1>&2"], timeout: .seconds(60)) }
+            }
+            var all: [ProcessResult] = []
+            for await r in group { all.append(r) }
+            return all
+        }
+        XCTAssertEqual(results.count, 150)
+        XCTAssertTrue(results.allSatisfy { $0.succeeded && $0.stdout == "out\n" && $0.stderr == "err\n" })
+    }
+
     func testTimeoutKillsTheProcess() async {
         let start = Date()
         let r = await runner.run(URL(fileURLWithPath: "/bin/sleep"), arguments: ["5"], timeout: .milliseconds(300))

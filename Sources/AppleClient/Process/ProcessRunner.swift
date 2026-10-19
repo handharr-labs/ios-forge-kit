@@ -79,16 +79,18 @@ public struct ProcessRunner: ProcessRunnerProtocol {
             DispatchQueue.global().asyncAfter(deadline: .now() + seconds(timeout), execute: item)
         }
 
-        // stderr is drained on a separate thread so a full pipe can't deadlock us.
+        // stderr is drained on its own thread so a full pipe can't deadlock us. A dedicated thread, not the
+        // global queue: with many runs at once every pool thread can be waiting here, and a drain queued on
+        // the same pool would then never start.
         let errBox = DataBox()
-        let group = DispatchGroup()
-        group.enter()
-        DispatchQueue.global().async {
+        let drained = DispatchSemaphore(value: 0)
+        let drain = Thread {
             errBox.data = err.fileHandleForReading.readDataToEndOfFile()
-            group.leave()
+            drained.signal()
         }
+        drain.start()
         let outData = out.fileHandleForReading.readDataToEndOfFile()
-        group.wait()
+        drained.wait()
         p.waitUntilExit()
         watchdog?.cancel()
         return ProcessResult(
