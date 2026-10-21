@@ -57,6 +57,8 @@ public enum FUIIcons {
     public static let heartFilled = "heart.fill"
     public static let star = "star"
     public static let starFilled = "star.fill"
+    public static let bookmark = "bookmark"
+    public static let bookmarkFilled = "bookmark.fill"
 
     // Workspace / system
     public static let terminal = "terminal"
