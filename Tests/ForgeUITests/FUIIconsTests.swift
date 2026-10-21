@@ -17,7 +17,7 @@ final class FUIIconsTests: XCTestCase {
         FUIIcons.play, FUIIcons.pause, FUIIcons.image, FUIIcons.imageBroken,
         FUIIcons.file, FUIIcons.upload, FUIIcons.camera, FUIIcons.calendar, FUIIcons.location,
         FUIIcons.person, FUIIcons.bell, FUIIcons.heart, FUIIcons.heartFilled,
-        FUIIcons.star, FUIIcons.starFilled,
+        FUIIcons.star, FUIIcons.starFilled, FUIIcons.bookmark, FUIIcons.bookmarkFilled,
     ]
 
     func testSampledIconsAreValidSFSymbols() {
